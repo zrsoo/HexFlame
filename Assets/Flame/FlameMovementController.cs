@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO solve flame rising problem
 // TODO Adjust flame flicker speed in ordinance with flame movement speed
 
 public class FlameMovementController : MonoBehaviour
@@ -36,7 +35,7 @@ public class FlameMovementController : MonoBehaviour
     {
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        // ExpandFlame();
+        ExpandFlame();
     }
 
     private void ExpandFlame()
@@ -49,7 +48,7 @@ public class FlameMovementController : MonoBehaviour
         {
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
             StartCoroutine(RiseFromTable(newFlame, 0.5f));
-            newFlame.AddComponent<FlameNoisyFlickerController>();
+            // newFlame.AddComponent<FlameNoisyFlickerController>();
 
             lastFlamePosition = transform.position;
         }
@@ -57,7 +56,7 @@ public class FlameMovementController : MonoBehaviour
 
     private void KeepFlameOnSurface()
     {
-        Debug.DrawRay(transform.position + movementDirection * speed * Time.deltaTime, -Vector3.up * 10, Color.red);
+        Debug.DrawRay(transform.position + movementDirection * (speed + 0.3f) * Time.deltaTime, -Vector3.up * 10, Color.red);
 
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
         if (Physics.Raycast(transform.position + movementDirection * (speed + 0.1f) * Time.deltaTime, -Vector3.up, out hitMove))
@@ -90,7 +89,7 @@ public class FlameMovementController : MonoBehaviour
             if (hitPlace.collider.gameObject.tag == "Table")
             {
                 // Position flame on table (slightly above).
-                transform.position = hitPlace.point + new Vector3(0, 0.001f, 0);
+                transform.position = hitPlace.point + new Vector3(0, 0.1f, 0);
             }
         }
     }
@@ -109,34 +108,36 @@ public class FlameMovementController : MonoBehaviour
         movementDirection = rotation * directionToTableCenter;
     }
 
+    // TODO Maybe implement y axis rising as well, if necessary
     IEnumerator RiseFromTable(GameObject flame, float duration)
     {
         float elapsed = 0.0f;
-        float initialScale = 0.0f;
-        float finalScale = flame.transform.localScale.y;
+        //float initialScale = 0.0f;
+        //float finalScale = flame.transform.localScale.y;
 
-        Vector3 currentScale = flame.transform.localScale;
-        currentScale.y = initialScale;
-        flame.transform.localScale = currentScale;
+        //Vector3 currentScale = flame.transform.localScale;
+        //currentScale.y = initialScale;
+        //flame.transform.localScale = currentScale;
 
-        Material flameMaterial = flame.GetComponent<Renderer>().material;
+        // Material flameMaterial = flame.GetComponent<Renderer>().material; // TODO this is not working, because flame is the flameStack, and you need to access an individual hexagon in order ot get the material
         float initialOpacity = 0.0f;
         float finalOpacity = 1.0f;
 
-        while(elapsed < duration)
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float tScale = Mathf.Clamp01(elapsed / duration);
 
-            tScale = tScale * tScale * (3.0f - 2.0f * tScale);
+            //float tScale = Mathf.Clamp01(elapsed / duration);
 
-            currentScale.y = Mathf.Lerp(initialScale, finalScale, tScale);
-            flame.transform.localScale = currentScale;
+            //tScale = tScale * tScale * (3.0f - 2.0f * tScale);
+
+            //currentScale.y = Mathf.Lerp(initialScale, finalScale, tScale);
+            //flame.transform.localScale = currentScale;
 
             float tOpacity;
             float percentage = elapsed / duration;
 
-            if(percentage > 0.5f)
+            if (percentage > 0.5f)
             {
                 // Account for jumping over 50%.
                 tOpacity = (percentage - 0.5f) / 0.5f;
@@ -144,14 +145,35 @@ public class FlameMovementController : MonoBehaviour
                 tOpacity = tOpacity * tOpacity * (3.0f - 2.0f * tOpacity);
 
                 float opacity = Mathf.Lerp(initialOpacity, finalOpacity, tOpacity);
-                flameMaterial.SetFloat("_FlameOpacity", opacity);
+
+                SetHexagonsOpacity(flame, opacity);
             }
             else
             {
-                flameMaterial.SetFloat("_FlameOpacity", 0.0f);
+                SetHexagonsOpacity(flame, 0.0f);
             }
 
             yield return null;
+        }
+    }
+
+    void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
+    {
+        // Loop over the children of the root GameObject and set their opacity.
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagon = rootHexagonStack.transform.GetChild(i);
+            MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
+            meshRenderer.material.SetFloat("_FlameOpacity", opacity);
+        }
+    }
+
+    void SetHexagonsScale(GameObject rootHexagonStack, Vector3 scale)
+    {
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagon = rootHexagonStack.transform.GetChild(i);
+            hexagon.transform.localScale = scale;
         }
     }
 }

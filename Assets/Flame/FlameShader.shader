@@ -3,6 +3,7 @@ Shader "Unlit/FlameShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _FlameOpacity ("Flame Opacity", Range(0.0, 1.0)) = 1.0
     }
     SubShader
     {
@@ -35,11 +36,25 @@ Shader "Unlit/FlameShader"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            float _FlameOpacity;
+
+            float generateNoise(float2 uv) {
+                return frac(sin(dot(uv, float2(12.9898, 78.233))) * 43.5453);
+            }
+
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+
+                // Generate noise
+                float2 uvSegment = floor(v.uv * 6.0); // Assuming 6 segments (hexagons)
+                float noise = generateNoise(uvSegment + _Time.yyy * 0.001);
+
+                // Offset vertex position horizontally
+                o.vertex.x += noise * 0.007;  // Adjust this multiplier as needed
+
+                o.uv = v.uv;
                 return o;
             }
 
@@ -68,6 +83,8 @@ Shader "Unlit/FlameShader"
 
                 dist += 0.1;
                 color.a = lerp(1.0, -0.08, dist);
+
+                color.a *= _FlameOpacity;
 
                 return color;
             }
