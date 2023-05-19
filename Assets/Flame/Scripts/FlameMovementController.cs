@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // TODO Adjust flame flicker speed in ordinance with flame movement speed
 
@@ -17,7 +17,9 @@ public class FlameMovementController : MonoBehaviour
     public GameObject flamePrefab;
 
     private Vector3 lastFlamePosition;
-    private float flameSpawnPositionDifference = 0.01f;
+    private float flameSpawnPositionDifference = 0.05f;
+
+    public Texture2D[] noiseTextures;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +29,12 @@ public class FlameMovementController : MonoBehaviour
         PlaceFlameOnTable();
         GenerateRandomMovementDirection();
 
+        noiseTextures = Resources.LoadAll<Texture2D>("NoiseTextures");
+
         lastFlamePosition = transform.position;
+
+        // Set initial flame's height
+        SetHexagonsHeight(gameObject);
     }
 
     // Update is called once per frame
@@ -36,22 +43,6 @@ public class FlameMovementController : MonoBehaviour
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
         ExpandFlame();
-    }
-
-    private void ExpandFlame()
-    {
-        // Instantiate new flames as the flame moves (spread).
-        float distanceTraveled = Vector3.Distance(transform.position, lastFlamePosition);
-
-        // If the flame has traveled enough, spawn another flame.
-        if (distanceTraveled > flameSpawnPositionDifference)
-        {
-            GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
-            StartCoroutine(RiseFromTable(newFlame, 0.5f));
-            // newFlame.AddComponent<FlameNoisyFlickerController>();
-
-            lastFlamePosition = transform.position;
-        }
     }
 
     private void KeepFlameOnSurface()
@@ -89,7 +80,7 @@ public class FlameMovementController : MonoBehaviour
             if (hitPlace.collider.gameObject.tag == "Table")
             {
                 // Position flame on table (slightly above).
-                transform.position = hitPlace.point + new Vector3(0, 0.1f, 0);
+                transform.position = hitPlace.point + new Vector3(0, 0.05f, 0);
             }
         }
     }
@@ -108,31 +99,39 @@ public class FlameMovementController : MonoBehaviour
         movementDirection = rotation * directionToTableCenter;
     }
 
+    // TODO problem with flame scaling
+    // TODO problem with how flames spawn, disappear, spawn again
+
+    private void ExpandFlame()
+    {
+        // Instantiate new flames as the flame moves (spread).
+        float distanceTraveled = Vector3.Distance(transform.position, lastFlamePosition);
+
+        // If the flame has traveled enough, spawn another flame.
+        if (distanceTraveled > flameSpawnPositionDifference)
+        {
+            GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+            newFlame.SetActive(false);
+            StartCoroutine(RiseFromTable(newFlame, 0.5f));
+
+            lastFlamePosition = transform.position;
+        }
+    }
+
     // TODO Maybe implement y axis rising as well, if necessary
     IEnumerator RiseFromTable(GameObject flame, float duration)
     {
+        SetHexagonsHeight(flame);
+        AddRandomPerlinNoiseTexture(flame);
+
         float elapsed = 0.0f;
-        //float initialScale = 0.0f;
-        //float finalScale = flame.transform.localScale.y;
 
-        //Vector3 currentScale = flame.transform.localScale;
-        //currentScale.y = initialScale;
-        //flame.transform.localScale = currentScale;
-
-        // Material flameMaterial = flame.GetComponent<Renderer>().material; // TODO this is not working, because flame is the flameStack, and you need to access an individual hexagon in order ot get the material
         float initialOpacity = 0.0f;
         float finalOpacity = 1.0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-
-            //float tScale = Mathf.Clamp01(elapsed / duration);
-
-            //tScale = tScale * tScale * (3.0f - 2.0f * tScale);
-
-            //currentScale.y = Mathf.Lerp(initialScale, finalScale, tScale);
-            //flame.transform.localScale = currentScale;
 
             float tOpacity;
             float percentage = elapsed / duration;
@@ -153,8 +152,17 @@ public class FlameMovementController : MonoBehaviour
                 SetHexagonsOpacity(flame, 0.0f);
             }
 
+            flame.SetActive(true);
+
             yield return null;
         }
+    }
+
+    private void AddRandomPerlinNoiseTexture(GameObject flame)
+    {
+        PerlinNoiseSampler perlinNoiseSampler = flame.AddComponent<PerlinNoiseSampler>();
+        Texture2D noiseTexture = noiseTextures[Random.Range(0, noiseTextures.Length)];
+        perlinNoiseSampler.perlinNoiseTexture = noiseTexture;
     }
 
     void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
@@ -176,4 +184,34 @@ public class FlameMovementController : MonoBehaviour
             hexagon.transform.localScale = scale;
         }
     }
+
+    void SetHexagonsHeight(GameObject rootHexagonStack)
+    {
+        float flameHeight = GetFlameHeight(rootHexagonStack);
+
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
+            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
+
+            hexagonRenderer.material.SetFloat("_FlameHeight", flameHeight);
+        }
+    }
+
+    float GetFlameHeight(GameObject rootHexagonStack)
+    {
+        float totalHeight = 0;
+
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
+
+            // Assuming the hexagon's height is represented by the y-scale of its local transform
+            totalHeight += hexagonTransform.localScale.y;
+        }
+
+        return totalHeight;
+    }
+
+    
 }

@@ -1,13 +1,17 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class StackHexagons : MonoBehaviour
 {
     public GameObject hexagonPrefab;
     public int count = 4;
+    public float scale = 0.3f;
     public float distanceBetweenCenters = 0.05f;
 
     private void Start()
     {
+        distanceBetweenCenters *= scale;
+
         for (int i = 0; i < count; i++)
         {
             GameObject hexagon = Instantiate(hexagonPrefab, 
@@ -18,20 +22,20 @@ public class StackHexagons : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    hexagonScript.width = 0.05f;
-                    hexagonScript.height = 0.13f;
+                    hexagonScript.width = 0.05f * scale;
+                    hexagonScript.height = 0.13f * scale;
                     break;
                 case 1:
-                    hexagonScript.width = 0.035f;
-                    hexagonScript.height = 0.12f;
+                    hexagonScript.width = 0.035f * scale;
+                    hexagonScript.height = 0.12f * scale;
                     break;
                 case 2:
-                    hexagonScript.width = 0.025f;
-                    hexagonScript.height = 0.1f;
+                    hexagonScript.width = 0.025f * scale;
+                    hexagonScript.height = 0.1f * scale;
                     break;
                 case 3:
-                    hexagonScript.width = 0.013f;
-                    hexagonScript.height = 0.1f;
+                    hexagonScript.width = 0.013f * scale;
+                    hexagonScript.height = 0.1f * scale;
                     break;
             }
 

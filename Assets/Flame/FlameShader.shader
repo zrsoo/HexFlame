@@ -4,6 +4,9 @@ Shader "Unlit/FlameShader"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _FlameOpacity ("Flame Opacity", Range(0.0, 1.0)) = 1.0
+        _SampledNoise ("Noise", Range(0.0, 1.1)) = 0.0
+        _HexagonYPosition ("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
+        _FlameHeight ("FlameHeight", Range(0.0, 100.0)) = 0.0
     }
     SubShader
     {
@@ -37,23 +40,33 @@ Shader "Unlit/FlameShader"
             float4 _MainTex_ST;
 
             float _FlameOpacity;
-
-            float generateNoise(float2 uv) {
-                return frac(sin(dot(uv, float2(12.9898, 78.233))) * 43.5453);
-            }
+            float _SampledNoise;
+            float _HexagonYPosition;
+            float _FlameHeight;
 
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
 
-                // Generate noise
-                float2 uvSegment = floor(v.uv * 6.0); // Assuming 6 segments (hexagons)
-                float noise = generateNoise(uvSegment + _Time.yyy * 0.001);
+                _SampledNoise *= 0.10f;
 
-                // Offset vertex position horizontally
-                o.vertex.x += noise * 0.007;  // Adjust this multiplier as needed
+                // Compute a delay based on the hexagon's y position
+                float delay = _HexagonYPosition * 0.1f;  // The factor of 0.1 is just an example; adjust this as needed for your use case
+                float speedFactor = 3.0f;
 
+                // Compute a factor that increases from 0 to 1 as the y position increases from 0 to a maximum, then decreases back to 0
+                // This uses a cosine function, which has the desired property
+                // The factor of 0.2 is just an example; adjust this as needed for your use case
+                float factor = cos(_HexagonYPosition * 1.2f);
+
+                // Modulate displacement with y-coordinate
+                float scaledPosition = (_HexagonYPosition / _FlameHeight) * 2.0 - 1.0;  // scale to range from -1 to 1
+                float displacementFactor = smoothstep(-3.5, 1.0, scaledPosition);
+
+                // Apply the noise value with the delay
+                float displacement = _SampledNoise * factor * sin((_Time.y + delay) * speedFactor) * displacementFactor * 0.1f;
+
+                o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
                 o.uv = v.uv;
                 return o;
             }
@@ -84,7 +97,11 @@ Shader "Unlit/FlameShader"
                 dist += 0.1;
                 color.a = lerp(1.0, -0.08, dist);
 
+//                 fixed4 color = fixed4(1.0, 1.0, 1.0, 1.0);
+
                 color.a *= _FlameOpacity;
+
+
 
                 return color;
             }
