@@ -57,9 +57,9 @@ public class FlameMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        // ExpandFlame();
+        ExpandFlame();
         UpdateFlameHeight();
     }
 
@@ -185,6 +185,8 @@ public class FlameMovementController : MonoBehaviour
         if (distanceTraveled > flameSpawnPositionDifference)
         {
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+            newFlame.transform.localScale = transform.localScale; // Make the new flame the same height as the current flame.
+
             newFlame.SetActive(false);
 
             // Delay setup for a frame so that instantiation has time to finish properly.
