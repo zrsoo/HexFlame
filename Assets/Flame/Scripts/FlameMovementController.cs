@@ -4,10 +4,6 @@ using UnityEngine.UIElements;
 
 // TODO problem with how flames spawn, disappear, spawn again.
 
-// TODO make flame grow taller and shrink in tallness over time, spawning flames of different sizes.
-
-// TODO make newly spawned flames grow over time.
-
 public class FlameMovementController : MonoBehaviour
 {
     private RaycastHit hitPlace;
