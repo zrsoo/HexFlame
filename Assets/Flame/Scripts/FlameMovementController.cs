@@ -40,9 +40,9 @@ public class FlameMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        ExpandFlame();
+        // ExpandFlame();
     }
 
     private void KeepFlameOnSurface()
@@ -99,7 +99,6 @@ public class FlameMovementController : MonoBehaviour
         movementDirection = rotation * directionToTableCenter;
     }
 
-    // TODO problem with flame scaling
     // TODO problem with how flames spawn, disappear, spawn again
 
     private void ExpandFlame()
