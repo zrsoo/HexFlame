@@ -48,16 +48,16 @@ Shader "Unlit/FlameShader"
             {
                 v2f o;
 
-                _SampledNoise *= 0.20f;
+                _SampledNoise *= 0.4f;
 
                 // Compute a delay based on the hexagon's y position
                 float delay = _HexagonYPosition * 0.1f;  // The factor of 0.1 is just an example; adjust this as needed for your use case
-                float speedFactor = 0.5f;
+                float speedFactor = 0.1f;
 
                 // Compute a factor that increases from 0 to 1 as the y position increases from 0 to a maximum, then decreases back to 0
                 // This uses a cosine function, which has the desired property
                 // The factor of 0.2 is just an example; adjust this as needed for your use case
-                float factor = cos(_HexagonYPosition * 0.1f);
+                float factor = cos(_HexagonYPosition * 0.2f);
 
                 // Modulate displacement with y-coordinate
                 float scaledPosition = (_HexagonYPosition / _FlameHeight) * 2.0 - 1.0;  // scale to range from -1 to 1
