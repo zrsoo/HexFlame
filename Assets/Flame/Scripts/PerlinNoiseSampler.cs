@@ -20,8 +20,8 @@ public class PerlinNoiseSampler : MonoBehaviour
 
         // Sample the Perlin Noise texture at a point that moves with time
         // Use modulo to loop the sampling point when it reaches the end of the texture
-        float u = (Time.time * 0.1f) % 512;
-        float v = ((Time.time / 2) * 0.1f) % 512;
+        float u = (Time.time * 0.05f) % 512;
+        float v = ((Time.time / 2) * 0.05f) % 512;
 
         Color sampledNoise = perlinNoiseTexture.GetPixelBilinear(u, v);
 

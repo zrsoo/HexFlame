@@ -51,7 +51,7 @@ Shader "Unlit/FlameShader"
                 _SampledNoise *= 0.4f;
 
                 // Compute a delay based on the hexagon's y position
-                float delay = _HexagonYPosition * 0.1f;  // The factor of 0.1 is just an example; adjust this as needed for your use case
+                float delay = _HexagonYPosition * 2.0f;  // The factor of 0.1 is just an example; adjust this as needed for your use case
                 float speedFactor = 0.1f;
 
                 // Compute a factor that increases from 0 to 1 as the y position increases from 0 to a maximum, then decreases back to 0

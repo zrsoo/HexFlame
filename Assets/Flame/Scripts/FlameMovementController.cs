@@ -2,7 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-// TODO Adjust flame flicker speed in ordinance with flame movement speed
+// TODO problem with how flames spawn, disappear, spawn again.
+// TODO make flames movement variety larger.
+// TODO make flame grow taller and shrink in tallness over time, spawning flames of different sizes.
+// TODO make newly spawned flames grow over time.
 
 public class FlameMovementController : MonoBehaviour
 {
@@ -98,8 +101,6 @@ public class FlameMovementController : MonoBehaviour
         // Apply the random offset to the direction.
         movementDirection = rotation * directionToTableCenter;
     }
-
-    // TODO problem with how flames spawn, disappear, spawn again
 
     private void ExpandFlame()
     {
