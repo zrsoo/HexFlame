@@ -40,9 +40,9 @@ public class FlameMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        // ExpandFlame();
+        ExpandFlame();
     }
 
     private void KeepFlameOnSurface()
@@ -120,7 +120,6 @@ public class FlameMovementController : MonoBehaviour
     // TODO Maybe implement y axis rising as well, if necessary
     IEnumerator RiseFromTable(GameObject flame, float duration)
     {
-        SetHexagonsHeight(flame);
         AddRandomPerlinNoiseTexture(flame);
 
         float elapsed = 0.0f;
@@ -152,6 +151,7 @@ public class FlameMovementController : MonoBehaviour
             }
 
             flame.SetActive(true);
+            SetHexagonsHeight(flame);
 
             yield return null;
         }
