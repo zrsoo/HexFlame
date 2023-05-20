@@ -83,6 +83,6 @@ public class FlameHeightController : MonoBehaviour
         currentHeight = Mathf.Clamp(currentHeight, minFlameHeight, maxFlameHeight);
 
         transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
-        transform.position = new Vector3(transform.position.x, transform.position.y + (currentHeight - prevHeight) / 2 / 50, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + (currentHeight - prevHeight) / 2 / 100, transform.position.z);
     }
 }

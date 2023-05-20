@@ -4,6 +4,9 @@ using UnityEngine.UIElements;
 
 // TODO problem with how flames spawn, disappear, spawn again.
 
+// TODO add more hexagons so you can make wave amplitude larger without visible separation
+// take it in small steps so as to not ruin everything.
+
 public class FlameMovementController : MonoBehaviour
 {
     private RaycastHit hitPlace;
@@ -17,7 +20,7 @@ public class FlameMovementController : MonoBehaviour
     public GameObject flamePrefab;
 
     private Vector3 lastFlamePosition;
-    private float flameSpawnPositionDifference = 0.05f;
+    private float flameSpawnPositionDifference = 0.1f;
 
     public Texture2D[] noiseTextures;
 
