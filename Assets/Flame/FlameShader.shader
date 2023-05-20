@@ -7,6 +7,7 @@ Shader "Unlit/FlameShader"
         _SampledNoise ("Noise", Range(0.0, 1.1)) = 0.0
         _HexagonYPosition ("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
         _FlameHeight ("FlameHeight", Range(0.0, 100.0)) = 0.0
+        _RandomPhaseOffset ("Random Phase Offset", Range(0.0, 100.0)) = 0.0
     }
     SubShader
     {
@@ -43,6 +44,7 @@ Shader "Unlit/FlameShader"
             float _SampledNoise;
             float _HexagonYPosition;
             float _FlameHeight;
+            float _RandomPhaseOffset;
 
             v2f vert (appdata v)
             {
@@ -64,7 +66,9 @@ Shader "Unlit/FlameShader"
                 float displacementFactor = smoothstep(-2.0, 1.0, scaledPosition);
 
                 // Apply the noise value with the delay
-                float displacement = _SampledNoise * factor * sin((_Time.y + delay) * speedFactor) * displacementFactor * 0.1f;
+                float displacement = _SampledNoise * factor * 
+                    sin((_Time.y + delay + _RandomPhaseOffset) * speedFactor) * 
+                    displacementFactor * 0.1f;
 
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
                 o.uv = v.uv;
