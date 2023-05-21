@@ -49,6 +49,29 @@ public class FlameMovementController : MonoBehaviour
         LeaveTrail();
     }
 
+    private void PlaceFlameOnTable(GameObject flameStack)
+    {
+        RaycastHit hitPlace;
+        // Cast a ray straight down.
+        if (Physics.Raycast(flameStack.transform.position, -Vector3.up, out hitPlace))
+        {
+            // If it hits the table.
+            if (hitPlace.collider.gameObject.CompareTag("Table"))
+            {
+                if (flameStack.name.Contains("TRAIL"))
+                {
+                    // Position flame on table but not slightly above since flame is already small.
+                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.01f, 0);
+                }
+                else
+                {
+                    // Position flame on table (slightly above).
+                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.04f, 0);
+                }
+            }
+        }
+    }
+
     private void KeepFlameOnSurface()
     {
         Debug.DrawRay(transform.position + movementDirection * (speed + 0.3f) * Time.deltaTime, -Vector3.up * 10, Color.red);
@@ -72,43 +95,6 @@ public class FlameMovementController : MonoBehaviour
         {
             GenerateRandomMovementDirection();
             flameOnTable = true;
-        }
-    }
-
-    //private void PlaceFlameOnTable()
-    //{
-    //    // Cast a ray straight down.
-    //    if (Physics.Raycast(transform.position, -Vector3.up, out hitPlace))
-    //    {
-    //        // If it hits the table.
-    //        if (hitPlace.collider.gameObject.tag == "Table")
-    //        {
-    //            // Position flame on table (slightly above).
-    //            transform.position = hitPlace.point + new Vector3(0, 0.05f, 0);
-    //        }
-    //    }
-    //}
-
-    private void PlaceFlameOnTable(GameObject flameStack)
-    {
-        RaycastHit hitPlace;
-        // Cast a ray straight down.
-        if (Physics.Raycast(flameStack.transform.position, -Vector3.up, out hitPlace))
-        {
-            // If it hits the table.
-            if (hitPlace.collider.gameObject.CompareTag("Table"))
-            {
-                if (flameStack.name.Contains("TRAIL"))
-                {
-                    // Position flame on table but not slightly above since flame is already small.
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.01f, 0);
-                }
-                else
-                {
-                    // Position flame on table (slightly above).
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.04f, 0);
-                }
-            }
         }
     }
 
@@ -226,6 +212,15 @@ public class FlameMovementController : MonoBehaviour
         perlinNoiseSampler.perlinNoiseTexture = noiseTexture;
     }
 
+    private void SetupFlame(GameObject rootHexagonStack)
+    {
+        SetHexagonsRandomDelay(rootHexagonStack);
+        AddRandomPerlinNoiseTexture(rootHexagonStack);
+        SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
+        PlaceFlameOnTable(rootHexagonStack);
+        SetHexagonsHeight(rootHexagonStack);
+    }
+
     private void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
     {
         // Loop over the children of the root GameObject and set their opacity.
@@ -261,15 +256,6 @@ public class FlameMovementController : MonoBehaviour
 
             hexagonRenderer.material.SetFloat("_RandomPhaseOffset", randomDelay);
         }
-    }
-
-    private void SetupFlame(GameObject rootHexagonStack)
-    {
-        SetHexagonsRandomDelay(rootHexagonStack);
-        AddRandomPerlinNoiseTexture(rootHexagonStack);
-        SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
-        PlaceFlameOnTable(rootHexagonStack);
-        SetHexagonsHeight(rootHexagonStack);
     }
 
     private static void SetBaseGrowthSpeed(GameObject rootHexagonStack, float speed)
