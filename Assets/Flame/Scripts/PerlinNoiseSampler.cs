@@ -34,8 +34,6 @@ public class PerlinNoiseSampler : MonoBehaviour
 
     void SetNoiseOfHexagons(float noise)
     {
-        // Starting from the second hexagon on (because the base of the flame does not move),
-        // set the y position and the noise accordingly
         for(int i = 0; i < transform.childCount; i++)
         {
             Transform hexagon = transform.GetChild(i);
