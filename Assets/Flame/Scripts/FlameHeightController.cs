@@ -75,7 +75,6 @@ public class FlameHeightController : MonoBehaviour
         }
 
         // Adjust growth speed based on direction and randomness.
-        // float currentGrowthSpeed = baseGrowthSpeed * (isGrowing ? randomGrowthFactor : 1 / randomGrowthFactor);
         float currentGrowthSpeed = baseGrowthSpeed * randomGrowthFactor;
         float currentHeight = prevHeight + Time.deltaTime * currentGrowthSpeed * (isGrowing ? 1 : -1);
 
