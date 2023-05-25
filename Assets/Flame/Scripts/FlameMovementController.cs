@@ -32,6 +32,7 @@ public class FlameMovementController : MonoBehaviour
 
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
+        StartCoroutine(GrowTrailFlame(gameObject));
     }
 
     // Update is called once per frame
@@ -73,7 +74,7 @@ public class FlameMovementController : MonoBehaviour
     private void KeepFlameOnSurface()
     {
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
-        if (Physics.Raycast(transform.position + movementDirection * (speed + 0.1f) * Time.deltaTime, -Vector3.up, out hitMove))
+        if (Physics.Raycast(transform.position + movementDirection * speed * Time.deltaTime, -Vector3.up, out hitMove))
         {
             // If it hits the table.
             if (hitMove.collider.gameObject.tag == "Table")
@@ -114,10 +115,8 @@ public class FlameMovementController : MonoBehaviour
 
         if (distanceTraveled > trailSpawnPositionDifference)
         {
-            // Debug.Log("TRAIL FLAME");
             bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
-            Destroy(newFlame.GetComponent<FlameHeightController>());
 
             StackHexagons stackHexagons = newFlame.GetComponent<StackHexagons>();
             stackHexagons.distanceBetweenCenters *= 0.15f;
@@ -150,8 +149,6 @@ public class FlameMovementController : MonoBehaviour
                 trailFlame.transform.localScale += new Vector3(growthSpeed, growthSpeed, 0);
             else
                 trailFlame.transform.localScale += new Vector3(0, growthSpeed, 0);
-
-            float currentHeight = trailFlame.transform.localScale.y;
 
             PlaceFlameOnTable(trailFlame);
 
