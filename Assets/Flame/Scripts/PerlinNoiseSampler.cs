@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PerlinNoiseSampler : MonoBehaviour
 {
     public Texture2D perlinNoiseTexture;
-    private float timeOffset;
+    private int perlinNoiseTextureWidth = 512;
+    private int perlinNoiseTextureHeight = 512;
 
     // Start is called before the first frame update
     void Start()
@@ -15,13 +14,10 @@ public class PerlinNoiseSampler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Assign a random time offset when the script starts
-        timeOffset = Random.value * 100; // Multiplied by 100 to increase variability
-
         // Sample the Perlin Noise texture at a point that moves with time
         // Use modulo to loop the sampling point when it reaches the end of the texture
-        float u = (Time.time * 0.05f) % 512;
-        float v = ((Time.time / 2) * 0.05f) % 512;
+        float u = (Time.time * 0.05f) % perlinNoiseTextureWidth;
+        float v = ((Time.time / 2) * 0.05f) % perlinNoiseTextureHeight;
 
         Color sampledNoise = perlinNoiseTexture.GetPixelBilinear(u, v);
 

@@ -158,6 +158,8 @@ MonoBehaviour:
   speed: 0
   flamePrefab: {fileID: 632095405545298957, guid: f7539ea3e57f53a40a0ace4bd9e8651f, type: 3}
   trailSpawnPositionDifference: 0.005
+  trailFlameGrowthChance: 0.5
+  trailFlameGrowthThreshold: 1
   noiseTextures: []
 --- !u!114 &222030201
 MonoBehaviour:
@@ -526,7 +528,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9f71d82d68987164f87ee91c062eca1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

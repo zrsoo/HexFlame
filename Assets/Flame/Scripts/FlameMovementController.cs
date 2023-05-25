@@ -1,12 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-// TODO problem with how flames spawn, disappear, spawn again.
 
 public class FlameMovementController : MonoBehaviour
 {
-    private RaycastHit hitPlace;
     private RaycastHit hitMove;
 
     private bool flameOnTable;
@@ -16,11 +12,11 @@ public class FlameMovementController : MonoBehaviour
 
     public GameObject flamePrefab;
 
-    private Vector3 lastFlamePosition;
-    private float flameSpawnPositionDifference = 0.03f;
-
     private Vector3 lastTrailPosition;
     public float trailSpawnPositionDifference = 0.005f;
+
+    public float trailFlameGrowthChance = 0.5f;
+    public float trailFlameGrowthThreshold = 1.0f;
 
     public Texture2D[] noiseTextures;
 
@@ -34,8 +30,6 @@ public class FlameMovementController : MonoBehaviour
 
         noiseTextures = Resources.LoadAll<Texture2D>("NoiseTextures");
 
-        lastFlamePosition = transform.position;
-
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
     }
@@ -45,7 +39,7 @@ public class FlameMovementController : MonoBehaviour
     {
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        ExpandFlame();
+        // ExpandFlame();
         LeaveTrail();
     }
 
@@ -58,24 +52,41 @@ public class FlameMovementController : MonoBehaviour
             // If it hits the table.
             if (hitPlace.collider.gameObject.CompareTag("Table"))
             {
-                if (flameStack.name.Contains("TRAIL"))
+                if (flameStack.name.Contains("TRAIL") && !flameStack.name.Contains("BIG"))
                 {
                     // Position flame on table but not slightly above since flame is already small.
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.01f, 0);
+                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.005f, 0);
                 }
                 else
                 {
                     // Position flame on table (slightly above).
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.04f, 0);
+                    flameStack.transform.position = hitPlace.point + new Vector3(0, GetDistanceFromTable(flameStack.transform.localScale.y), 0);
                 }
+            }
+        }
+    }
+
+    private float GetDistanceFromTable(float scale)
+    {
+        return scale * 0.04f;
+    }
+
+    private void PlaceGrowingFlameOnTable(GameObject flameStack)
+    {
+        RaycastHit hitPlace;
+        // Cast a ray straight up.
+        if (Physics.Raycast(flameStack.transform.position, Vector3.up, out hitPlace))
+        {
+            // If it hits the table.
+            if (hitPlace.collider.gameObject.CompareTag("Table"))
+            {    
+                flameStack.transform.position = hitPlace.point + new Vector3(0, 0.04f, 0);   
             }
         }
     }
 
     private void KeepFlameOnSurface()
     {
-        Debug.DrawRay(transform.position + movementDirection * (speed + 0.3f) * Time.deltaTime, -Vector3.up * 10, Color.red);
-
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
         if (Physics.Raycast(transform.position + movementDirection * (speed + 0.1f) * Time.deltaTime, -Vector3.up, out hitMove))
         {
@@ -112,31 +123,6 @@ public class FlameMovementController : MonoBehaviour
         movementDirection = rotation * directionToTableCenter;
     }
 
-    private void ExpandFlame()
-    {
-        // Instantiate new flames as the flame moves (spread).
-        float distanceTraveled = Vector3.Distance(transform.position, lastFlamePosition);
-
-        // If the flame has traveled enough, spawn another flame.
-        if (distanceTraveled > flameSpawnPositionDifference)
-        {
-            GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
-
-            newFlame.SetActive(false);
-
-            // Delay setup for a frame so that instantiation has time to finish properly.
-            StartCoroutine(DelayedSetup(newFlame));
-
-            newFlame.transform.localScale = transform.localScale; // Make the new flame the same height as the current flame.
-
-            newFlame.SetActive(true);
-
-            StartCoroutine(RiseFromTable(newFlame, 0.5f));
-
-            lastFlamePosition = transform.position;
-        }
-    }
-
     private void LeaveTrail()
     {
         float distanceTraveled = Vector3.Distance(transform.position, lastTrailPosition);
@@ -144,11 +130,13 @@ public class FlameMovementController : MonoBehaviour
         if (distanceTraveled > trailSpawnPositionDifference)
         {
             // Debug.Log("TRAIL FLAME");
-
+            bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+            Destroy(newFlame.GetComponent<FlameHeightController>());
 
             StackHexagons stackHexagons = newFlame.GetComponent<StackHexagons>();
-            stackHexagons.scale *= 0.15f;
+            stackHexagons.distanceBetweenCenters *= 0.15f;
+            newFlame.transform.localScale *= 0.15f;
 
             newFlame.SetActive(false);
 
@@ -158,14 +146,39 @@ public class FlameMovementController : MonoBehaviour
             newFlame.SetActive(true);
             newFlame.name += "TRAIL";
 
-            StartCoroutine(RiseFromTable(newFlame, 0.5f));
+            StartCoroutine(RiseFromTable(newFlame, 0.5f, isBig));
 
             lastTrailPosition = transform.position;
         }
     }
 
-    // TODO Maybe implement y axis rising as well, if necessary
-    private IEnumerator RiseFromTable(GameObject flame, float duration)
+    private IEnumerator GrowTrailFlame(GameObject trailFlame)
+    {
+        float growthSpeed = 0.0001f;
+
+
+        while (trailFlame.transform.localScale.y <= trailFlameGrowthThreshold)
+        {
+            float prevHeight = trailFlame.transform.localScale.y;
+
+            if (trailFlame.transform.localScale.x < 1)
+                trailFlame.transform.localScale += new Vector3(growthSpeed, growthSpeed, 0);
+            else
+                trailFlame.transform.localScale += new Vector3(0, growthSpeed, 0);
+
+            float currentHeight = trailFlame.transform.localScale.y;
+
+            PlaceFlameOnTable(trailFlame);
+
+            yield return null;
+        }
+
+        // Once the flame reaches the growth threshold, add the FlameHeightController component so it starts varying in height.
+        trailFlame.AddComponent<FlameHeightController>();
+        SetBaseGrowthSpeed(trailFlame, 0.05f);
+    }
+
+    private IEnumerator RiseFromTable(GameObject flame, float duration, bool isBig)
     {
         float elapsed = 0.0f;
 
@@ -197,6 +210,13 @@ public class FlameMovementController : MonoBehaviour
 
             yield return null;
         }
+
+        // Start growth process with certain probability.
+        if (isBig)
+        {
+            flame.name += "BIG";
+            StartCoroutine(GrowTrailFlame(flame));
+        }
     }
 
     private IEnumerator DelayedSetup(GameObject newFlame)
@@ -216,7 +236,10 @@ public class FlameMovementController : MonoBehaviour
     {
         SetHexagonsRandomDelay(rootHexagonStack);
         AddRandomPerlinNoiseTexture(rootHexagonStack);
-        SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
+
+        if(!rootHexagonStack.name.Contains("Clone"))
+            SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
+
         PlaceFlameOnTable(rootHexagonStack);
         SetHexagonsHeight(rootHexagonStack);
     }
@@ -235,7 +258,7 @@ public class FlameMovementController : MonoBehaviour
     private void SetHexagonsHeight(GameObject rootHexagonStack)
     {
         float flameHeight = GetFlameHeight(rootHexagonStack);
-        // Debug.Log("HEIGHT:" + flameHeight);
+
         for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
         {
             Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);

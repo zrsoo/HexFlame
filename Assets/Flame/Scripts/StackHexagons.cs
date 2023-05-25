@@ -17,7 +17,7 @@ public class StackHexagons : MonoBehaviour
                 new Vector3(transform.position.x, transform.position.y + i * distanceBetweenCenters, transform.position.z), Quaternion.identity, this.transform);
             DrawHexagon hexagonScript = hexagon.GetComponent<DrawHexagon>();
 
-            // Custom first hexagon size
+            // Custom hexagon sizes.
             switch (i)
             {
                 case 0:
