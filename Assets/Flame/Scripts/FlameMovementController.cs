@@ -39,7 +39,6 @@ public class FlameMovementController : MonoBehaviour
     {
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        // ExpandFlame();
         LeaveTrail();
     }
 
@@ -69,20 +68,6 @@ public class FlameMovementController : MonoBehaviour
     private float GetDistanceFromTable(float scale)
     {
         return scale * 0.04f;
-    }
-
-    private void PlaceGrowingFlameOnTable(GameObject flameStack)
-    {
-        RaycastHit hitPlace;
-        // Cast a ray straight up.
-        if (Physics.Raycast(flameStack.transform.position, Vector3.up, out hitPlace))
-        {
-            // If it hits the table.
-            if (hitPlace.collider.gameObject.CompareTag("Table"))
-            {    
-                flameStack.transform.position = hitPlace.point + new Vector3(0, 0.04f, 0);   
-            }
-        }
     }
 
     private void KeepFlameOnSurface()

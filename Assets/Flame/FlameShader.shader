@@ -101,11 +101,7 @@ Shader "Unlit/FlameShader"
                 dist += 0.1;
                 color.a = lerp(1.0, -0.08, dist);
 
-//                 fixed4 color = fixed4(1.0, 1.0, 1.0, 1.0);
-
                 color.a *= _FlameOpacity;
-
-
 
                 return color;
             }
