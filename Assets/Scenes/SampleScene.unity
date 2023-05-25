@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 222030202}
   - component: {fileID: 222030198}
   - component: {fileID: 222030201}
-  - component: {fileID: 222030204}
   m_Layer: 0
   m_Name: HexagonStack
   m_TagString: Untagged
@@ -189,7 +188,7 @@ MonoBehaviour:
   hexagonPrefab: {fileID: 5608007766839917533, guid: fb12330402971e34ca4dbecf94bf8ba8, type: 3}
   count: 5
   scale: 0.4
-  distanceBetweenCenters: 0.05
+  distanceBetweenCenters: 0.0075
 --- !u!4 &222030203
 Transform:
   m_ObjectHideFlags: 0
@@ -205,19 +204,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &222030204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222030195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0923bf8b974e2444a9c18f1f6fe9d707, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseGrowthSpeed: 0.05
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
