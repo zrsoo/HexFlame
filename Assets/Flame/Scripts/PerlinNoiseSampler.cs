@@ -5,6 +5,7 @@ public class PerlinNoiseSampler : MonoBehaviour
     public Texture2D perlinNoiseTexture;
     private int perlinNoiseTextureWidth = 512;
     private int perlinNoiseTextureHeight = 512;
+    private float timeMultiplier = 0.05f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,8 +17,8 @@ public class PerlinNoiseSampler : MonoBehaviour
     {
         // Sample the Perlin Noise texture at a point that moves with time
         // Use modulo to loop the sampling point when it reaches the end of the texture
-        float u = (Time.time * 0.05f) % perlinNoiseTextureWidth;
-        float v = ((Time.time / 2) * 0.05f) % perlinNoiseTextureHeight;
+        float u = (Time.time * timeMultiplier) % perlinNoiseTextureWidth;
+        float v = (Time.time * timeMultiplier) % perlinNoiseTextureHeight;
 
         Color sampledNoise = perlinNoiseTexture.GetPixelBilinear(u, v);
 

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class FlameHeightController : MonoBehaviour
 {
     public float baseGrowthSpeed = 0.05f;
     private bool isGrowing = true;
-    private float minFlameHeight = 1.0f; 
+    private float minFlameHeight = 0.4f; 
     private float maxFlameHeight;
     private float randomGrowthFactor;
     private float transitionDuration = 10f; // duration over which random values will change
@@ -15,7 +16,7 @@ public class FlameHeightController : MonoBehaviour
     void Start()
     {
         randomGrowthFactor = Random.Range(0.8f, 1.7f);
-        maxFlameHeight = Random.Range(1.5f, 3.0f);
+        maxFlameHeight = Random.Range(0.4f, 1.4f);
 
         StartCoroutine(ChangeGrowthFactorOverTime());
         StartCoroutine(ChangeMaxHeightOverTime());
@@ -47,8 +48,8 @@ public class FlameHeightController : MonoBehaviour
     {
         while (true)
         {
-            float initialMaxHeight = maxFlameHeight;
-            float finalMaxHeight = Random.Range(1.1f, 3.0f);
+            float initialMaxHeight = 1.0f;
+            float finalMaxHeight = Random.Range(0.4f, 1.4f);
 
             float timePassed = 0;
             while (timePassed < transitionDuration)
@@ -63,6 +64,7 @@ public class FlameHeightController : MonoBehaviour
     private void UpdateFlameHeight()
     {
         float prevHeight = transform.localScale.y;
+        float prevElevation = transform.localPosition.y;
 
         // Determine the current direction of growth.
         if (transform.localScale.y >= maxFlameHeight)
@@ -82,6 +84,6 @@ public class FlameHeightController : MonoBehaviour
         currentHeight = Mathf.Clamp(currentHeight, minFlameHeight, maxFlameHeight);
 
         transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
-        transform.position = new Vector3(transform.position.x, transform.position.y + (currentHeight - prevHeight) / 2 / 100, transform.position.z);
+        FlameMovementController.PlaceFlameOnTable(gameObject);
     }
 }

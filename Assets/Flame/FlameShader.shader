@@ -50,27 +50,34 @@ Shader "Unlit/FlameShader"
             {
                 v2f o;
 
-                _SampledNoise *= 0.4f;
+                float waveSpeed = 30.0f; // control the speed of the wave
+                float waveAmplitude = 0.35f; // control the amplitude of the wave
+                float noiseScale = 0.25f;
 
-                // Compute a delay based on the hexagon's y position
-                float delay = _HexagonYPosition * 2.0f; 
-                float speedFactor = 0.1f;
+                // _RandomPhaseOffset is between 0 and 100, normalize it.
+                // Multiply by 1.3f to increase variability and add to speed
+                // so that each flame flickers at different speeds.
+                waveSpeed *= (_RandomPhaseOffset / 100.0f) * 1.3f;
 
-                // Compute a factor that increases from 0 to 1 as the y position increases from 0 to a maximum, then decreases back to 0
-                // This uses a cosine function, which has the desired property
-                // The factor of 0.2 is just an example;
-                float factor = cos(_HexagonYPosition * 0.2f);
+                // Compute a wave position based on the hexagon's y position and the current time
+                float wavePosition = (_HexagonYPosition + ((_Time.y + _RandomPhaseOffset) 
+                    * waveSpeed)) / 10.f;
 
-                // Modulate displacement with y-coordinate
-                float scaledPosition = (_HexagonYPosition / _FlameHeight) * 2.0 - 1.0;  // scale to range from -1 to 1
-                float displacementFactor = smoothstep(-2.0, 1.0, scaledPosition);
+                // Compute a displacement based on the wave position
+                float displacement = sin(wavePosition) * waveAmplitude;
 
-                // Apply the noise value with the delay
-                float displacement = _SampledNoise * factor * 
-                    sin((_Time.y + delay + _RandomPhaseOffset) * speedFactor) * 
-                    displacementFactor * 0.1f;
+                displacement *= (_SampledNoise * noiseScale);
 
+                // Modulate the displacement with y-coordinate
+                // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
+                float displacementFactor = smoothstep(-0.55, 1.0, _HexagonYPosition / _FlameHeight);
+
+                // Apply the displacement factor to the displacement
+                displacement *= displacementFactor;
+
+                // Adjust the vertex position based on the displacement
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
+
                 o.uv = v.uv;
                 return o;
             }

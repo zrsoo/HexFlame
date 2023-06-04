@@ -15,7 +15,7 @@ public class FlameMovementController : MonoBehaviour
     private Vector3 lastTrailPosition;
     public float trailSpawnPositionDifference = 0.005f;
 
-    public float trailFlameGrowthChance = 0.5f;
+    public float trailFlameGrowthChance = 0.7f;
     public float trailFlameGrowthThreshold = 1.0f;
 
     public Texture2D[] noiseTextures;
@@ -32,7 +32,7 @@ public class FlameMovementController : MonoBehaviour
 
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
-        StartCoroutine(GrowTrailFlame(gameObject));
+        // StartCoroutine(GrowTrailFlame(gameObject));
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class FlameMovementController : MonoBehaviour
         LeaveTrail();
     }
 
-    private void PlaceFlameOnTable(GameObject flameStack)
+    public static void PlaceFlameOnTable(GameObject flameStack)
     {
         RaycastHit hitPlace;
         // Cast a ray straight down.
@@ -60,21 +60,30 @@ public class FlameMovementController : MonoBehaviour
                 else
                 {
                     // Position flame on table (slightly above).
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, GetDistanceFromTable(flameStack.transform.localScale.y), 0);
+                    //flameStack.transform.position = hitPlace.point + new Vector3(0, GetDistanceFromTable(flameStack.transform.localScale.y), 0);
+                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.005f + ComputeYPosition(flameStack.transform.localScale.y), 0);
                 }
             }
         }
     }
 
-    private float GetDistanceFromTable(float scale)
+    public static float ComputeYPosition(float scale)
     {
-        return scale * 0.04f;
+        float scale1 = 0.15f, yPos1 = 0.0f;
+        float scale2 = 0.98f, yPos2 = 0.025f;
+
+        float m = (yPos2 - yPos1) / (scale2 - scale1);
+        float b = yPos1 - m * scale1;
+
+        float yPos = m * scale + b;
+
+        return yPos;
     }
 
     private void KeepFlameOnSurface()
     {
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
-        if (Physics.Raycast(transform.position + movementDirection * speed * Time.deltaTime, -Vector3.up, out hitMove))
+        if (Physics.Raycast(transform.position + movementDirection * (speed + 0.4f) * Time.deltaTime, -Vector3.up, out hitMove))
         {
             // If it hits the table.
             if (hitMove.collider.gameObject.tag == "Table")
@@ -217,10 +226,11 @@ public class FlameMovementController : MonoBehaviour
     private void SetupFlame(GameObject rootHexagonStack)
     {
         SetHexagonsRandomDelay(rootHexagonStack);
-        AddRandomPerlinNoiseTexture(rootHexagonStack);
 
         if(!rootHexagonStack.name.Contains("Clone"))
             SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
+        else
+            AddRandomPerlinNoiseTexture(rootHexagonStack);
 
         PlaceFlameOnTable(rootHexagonStack);
         SetHexagonsHeight(rootHexagonStack);

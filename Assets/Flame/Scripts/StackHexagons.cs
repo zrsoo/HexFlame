@@ -3,8 +3,8 @@ using UnityEngine;
 public class StackHexagons : MonoBehaviour
 {
     public GameObject hexagonPrefab;
-    public int count = 5;
-    public float scale = 0.4f;
+    public int count = 9;
+    public float scale = 0.2f;
     public float distanceBetweenCenters = 0.01f;
 
     private void Start()
@@ -21,22 +21,38 @@ public class StackHexagons : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    hexagonScript.width = 0.04f * scale;
+                    hexagonScript.width = 0.1f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 1:
-                    hexagonScript.width = 0.03f * scale;
+                    hexagonScript.width = 0.088f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 2:
-                    hexagonScript.width = 0.02f * scale;
+                    hexagonScript.width = 0.076f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 3:
-                    hexagonScript.width = 0.015f * scale;
+                    hexagonScript.width = 0.064f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 4:
+                    hexagonScript.width = 0.052f * scale;
+                    hexagonScript.height = 0.1f * scale;
+                    break;
+                case 5:
+                    hexagonScript.width = 0.040f * scale;
+                    hexagonScript.height = 0.1f * scale;
+                    break;
+                case 6:
+                    hexagonScript.width = 0.028f * scale;
+                    hexagonScript.height = 0.1f * scale;
+                    break;
+                case 7:
+                    hexagonScript.width = 0.016f * scale;
+                    hexagonScript.height = 0.1f * scale;
+                    break;
+                case 8:
                     hexagonScript.width = 0.01f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
