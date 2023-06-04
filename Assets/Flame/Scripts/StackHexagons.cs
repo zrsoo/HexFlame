@@ -4,7 +4,7 @@ public class StackHexagons : MonoBehaviour
 {
     public GameObject hexagonPrefab;
     public int count = 9;
-    public float scale = 0.2f;
+    public float scale = 0.4f;
     public float distanceBetweenCenters = 0.01f;
 
     private void Start()
