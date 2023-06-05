@@ -8,6 +8,10 @@ Shader "Unlit/FlameShader"
         _HexagonYPosition ("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
         _FlameHeight ("FlameHeight", Range(0.0, 100.0)) = 0.0
         _RandomPhaseOffset ("Random Phase Offset", Range(0.0, 100.0)) = 0.0
+
+        _RedChannel ("Red Channel", Range(0.0, 1.0)) = 1.0
+        _GreenChannel ("Green Channel", Range(0.0, 1.0)) = 0.5
+        _BlueChannel ("Blue Channel", Range(0.0, 1.0)) = 0.0 
     }
     SubShader
     {
@@ -45,6 +49,10 @@ Shader "Unlit/FlameShader"
             float _HexagonYPosition;
             float _FlameHeight;
             float _RandomPhaseOffset;
+
+            float _RedChannel;
+            float _GreenChannel;
+            float _BlueChannel;
 
             v2f vert (appdata v)
             {
@@ -93,7 +101,8 @@ Shader "Unlit/FlameShader"
                 // Calculate the distance from the center of the texture
                 float dist = length(distUv);
 
-                fixed4 colorOrange = fixed4(1.0, 0.5, 0.0, 1.0);
+                fixed4 colorOrange = fixed4(_RedChannel, 
+                    _GreenChannel, _BlueChannel, 1.0);
                 fixed4 colorRed = fixed4(1.0, 0.0, 0.0, 1.0);
 
                 fixed4 color;

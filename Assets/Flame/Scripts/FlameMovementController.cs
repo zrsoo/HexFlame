@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FlameMovementController : MonoBehaviour
 {
@@ -20,10 +22,20 @@ public class FlameMovementController : MonoBehaviour
 
     public Texture2D[] noiseTextures;
 
+    public float red, green, blue;
+
+    private List<GameObject> flames; 
+
     // Start is called before the first frame update
     void Start()
     {
+        flames = new List<GameObject>();
+
         speed = 0.01f;
+
+        red = 255.0f;
+        green = 177.5f;
+        blue = 0.0f;
 
         PlaceFlameOnTable(gameObject);
         GenerateRandomMovementDirection();
@@ -32,7 +44,7 @@ public class FlameMovementController : MonoBehaviour
 
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
-        // StartCoroutine(GrowTrailFlame(gameObject));
+        flames.Add(gameObject);
     }
 
     // Update is called once per frame
@@ -126,6 +138,7 @@ public class FlameMovementController : MonoBehaviour
         {
             bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+            flames.Add(newFlame);
 
             StackHexagons stackHexagons = newFlame.GetComponent<StackHexagons>();
             stackHexagons.distanceBetweenCenters *= 0.15f;
@@ -234,6 +247,7 @@ public class FlameMovementController : MonoBehaviour
 
         PlaceFlameOnTable(rootHexagonStack);
         SetHexagonsHeight(rootHexagonStack);
+        SetHexagonsColor(rootHexagonStack, red, green, blue);
     }
 
     private void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
@@ -282,6 +296,23 @@ public class FlameMovementController : MonoBehaviour
         }
     }
 
+    private void SetHexagonsColor(GameObject rootHexagonStack, float red, float green, float blue)
+    {
+        red /= 255.0f;
+        green /= 255.0f;
+        blue /= 255.0f;
+
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
+            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
+
+            hexagonRenderer.material.SetFloat("_RedChannel", red);
+            hexagonRenderer.material.SetFloat("_GreenChannel", green);
+            hexagonRenderer.material.SetFloat("_BlueChannel", blue);
+        }
+    }
+
     private float GetFlameHeight(GameObject rootHexagonStack)
     {
         float totalHeight = 0;
@@ -295,5 +326,13 @@ public class FlameMovementController : MonoBehaviour
         }
 
         return totalHeight;
+    }
+
+    public void OnColorChanged()
+    {
+        foreach(GameObject flame in flames)
+        {
+            SetHexagonsColor(flame, red, green, blue);
+        }
     }
 }
