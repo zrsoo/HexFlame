@@ -21,39 +21,39 @@ public class StackHexagons : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    hexagonScript.width = 0.1f * scale;
+                    hexagonScript.width = 0.15f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 1:
-                    hexagonScript.width = 0.088f * scale;
+                    hexagonScript.width = 0.132f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 2:
-                    hexagonScript.width = 0.076f * scale;
+                    hexagonScript.width = 0.114f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 3:
-                    hexagonScript.width = 0.064f * scale;
+                    hexagonScript.width = 0.096f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 4:
-                    hexagonScript.width = 0.052f * scale;
+                    hexagonScript.width = 0.078f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 5:
-                    hexagonScript.width = 0.040f * scale;
+                    hexagonScript.width = 0.06f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 6:
-                    hexagonScript.width = 0.028f * scale;
+                    hexagonScript.width = 0.042f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 7:
-                    hexagonScript.width = 0.016f * scale;
+                    hexagonScript.width = 0.024f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
                 case 8:
-                    hexagonScript.width = 0.01f * scale;
+                    hexagonScript.width = 0.016f * scale;
                     hexagonScript.height = 0.1f * scale;
                     break;
             }
