@@ -13,6 +13,7 @@ public class FlamePropertyController : MonoBehaviour
     public TextMeshProUGUI redGauge;
     public TextMeshProUGUI greenGauge;
     public TextMeshProUGUI blueGauge;
+    public TextMeshProUGUI growthChanceGauge;
 
     public Slider redSlider;
     public Slider greenSlider;
@@ -49,5 +50,13 @@ public class FlamePropertyController : MonoBehaviour
 
         // Change the color of pre-existing flames.
         flameMovementController.OnColorChanged();
+    }
+
+    public void SetGrowthChance(float chance)
+    {
+        flameMovementController.trailFlameGrowthChance = chance;
+
+        float chanceText = chance * 100.0f;
+        growthChanceGauge.text = chanceText.ToString("0") + " %";
     }
 }
