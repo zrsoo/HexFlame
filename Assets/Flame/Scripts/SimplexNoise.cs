@@ -30,7 +30,6 @@ public class SimplexNoise : MonoBehaviour
     void Update()
     {
         float noiseValue = Generate(seed, Time.time * noiseSpeed);
-        // Debug.Log(noiseValue);
 
         SetNoiseOfHexagons(noiseValue);
     }

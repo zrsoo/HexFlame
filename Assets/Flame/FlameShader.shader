@@ -11,7 +11,11 @@ Shader "Unlit/FlameShader"
 
         _RedChannel ("Red Channel", Range(0.0, 1.0)) = 1.0
         _GreenChannel ("Green Channel", Range(0.0, 1.0)) = 0.5
-        _BlueChannel ("Blue Channel", Range(0.0, 1.0)) = 0.0 
+        _BlueChannel ("Blue Channel", Range(0.0, 1.0)) = 0.0
+
+        _OuterRedChannel ("Outer Red Channel", Range(0.0, 1.0)) = 1.0
+        _OuterGreenChannel ("Outer Green Channel", Range(0.0, 1.0)) = 0.0
+        _OuterBlueChannel ("Outer Blue Channel", Range(0.0, 1.0)) = 0.0
     }
     SubShader
     {
@@ -54,6 +58,10 @@ Shader "Unlit/FlameShader"
             float _GreenChannel;
             float _BlueChannel;
 
+            float _OuterRedChannel;
+            float _OuterGreenChannel;
+            float _OuterBlueChannel;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -89,14 +97,16 @@ Shader "Unlit/FlameShader"
                 // Calculate the distance from the center of the texture
                 float dist = length(distUv);
 
-                fixed4 colorOrange = fixed4(_RedChannel, 
+                fixed4 innerColor = fixed4(_RedChannel, 
                     _GreenChannel, _BlueChannel, 1.0);
-                fixed4 colorRed = fixed4(1.0, 0.0, 0.0, 1.0);
+                fixed4 outerColor = fixed4(_OuterRedChannel, _OuterGreenChannel,
+                 _OuterBlueChannel, 1.0);
 
                 fixed4 color;
 
-                float t = smoothstep(0.15, 1.0, dist);
-                color = lerp(colorOrange, colorRed, t);
+                // Changed from 0.0
+                float t = smoothstep(-0.5, 1.0, dist);
+                color = lerp(innerColor, outerColor, t);
 
                 if(dist > 0.80) {
                     discard;

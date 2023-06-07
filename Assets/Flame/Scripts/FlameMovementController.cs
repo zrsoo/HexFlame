@@ -22,7 +22,8 @@ public class FlameMovementController : MonoBehaviour
 
     public Texture2D[] noiseTextures;
 
-    public float red, green, blue;
+    public float innerRedChannel, innerGreenChannel, innerBlueChannel;
+    public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
     private List<GameObject> flames; 
 
@@ -33,9 +34,13 @@ public class FlameMovementController : MonoBehaviour
 
         speed = 0.01f;
 
-        red = 255.0f;
-        green = 177.5f;
-        blue = 0.0f;
+        innerRedChannel = 255.0f;
+        innerGreenChannel = 127.5f;
+        innerBlueChannel = 0.0f;
+
+        outerRedChannel = 255.0f;
+        outerGreenChannel = 0.0f;
+        outerBlueChannel = 0.0f;
 
         PlaceFlameOnTable(gameObject);
         GenerateRandomMovementDirection();
@@ -243,7 +248,8 @@ public class FlameMovementController : MonoBehaviour
 
         PlaceFlameOnTable(rootHexagonStack);
         SetHexagonsHeight(rootHexagonStack);
-        SetHexagonsColor(rootHexagonStack, red, green, blue);
+        SetHexagonsInnerColor(rootHexagonStack, innerRedChannel, innerGreenChannel, innerBlueChannel);
+        SetHexagonsOuterColor(rootHexagonStack, outerRedChannel, outerGreenChannel, outerBlueChannel);
     }
 
     private void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
@@ -292,7 +298,7 @@ public class FlameMovementController : MonoBehaviour
         }
     }
 
-    private void SetHexagonsColor(GameObject rootHexagonStack, float red, float green, float blue)
+    private void SetHexagonsInnerColor(GameObject rootHexagonStack, float red, float green, float blue)
     {
         red /= 255.0f;
         green /= 255.0f;
@@ -306,6 +312,23 @@ public class FlameMovementController : MonoBehaviour
             hexagonRenderer.material.SetFloat("_RedChannel", red);
             hexagonRenderer.material.SetFloat("_GreenChannel", green);
             hexagonRenderer.material.SetFloat("_BlueChannel", blue);
+        }
+    }
+
+    private void SetHexagonsOuterColor(GameObject rootHexagonStack, float red, float green, float blue)
+    {
+        red /= 255.0f;
+        green /= 255.0f;
+        blue /= 255.0f;
+
+        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
+        {
+            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
+            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
+
+            hexagonRenderer.material.SetFloat("_OuterRedChannel", red);
+            hexagonRenderer.material.SetFloat("_OuterGreenChannel", green);
+            hexagonRenderer.material.SetFloat("_OuterBlueChannel", blue);
         }
     }
 
@@ -328,7 +351,8 @@ public class FlameMovementController : MonoBehaviour
     {
         foreach(GameObject flame in flames)
         {
-            SetHexagonsColor(flame, red, green, blue);
+            SetHexagonsInnerColor(flame, innerRedChannel, innerGreenChannel, innerBlueChannel);
+            SetHexagonsOuterColor(flame, outerRedChannel, outerGreenChannel, outerBlueChannel);
         }
     }
 }
