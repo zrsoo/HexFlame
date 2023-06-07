@@ -48,8 +48,6 @@ public class FlamePropertyController : MonoBehaviour
 
     private void SendInnerColors(float red, float green, float blue)
     {
-        Debug.Log(red.ToString() + " " + green.ToString() + " " + blue.ToString());
-
         flameMovementController.innerRedChannel = red;
         flameMovementController.innerGreenChannel = green;
         flameMovementController.innerBlueChannel = blue;
@@ -60,8 +58,6 @@ public class FlamePropertyController : MonoBehaviour
 
     private void SendOuterColors(float red, float green, float blue)
     {
-        Debug.Log(red.ToString() + " " + green.ToString() + " " + blue.ToString());
-
         flameMovementController.outerRedChannel = red;
         flameMovementController.outerGreenChannel = green;
         flameMovementController.outerBlueChannel = blue;
