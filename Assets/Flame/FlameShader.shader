@@ -58,27 +58,15 @@ Shader "Unlit/FlameShader"
             {
                 v2f o;
 
-                float waveSpeed = 30.0f; // control the speed of the wave
-                float waveAmplitude = 0.35f; // control the amplitude of the wave
-                float noiseScale = 0.25f;
+                // Control the amplitude of the displacement
+                float displacementAmplitude = 0.08f; 
 
-                // _RandomPhaseOffset is between 0 and 100, normalize it.
-                // Multiply by 1.3f to increase variability and add to speed
-                // so that each flame flickers at different speeds.
-                waveSpeed *= (_RandomPhaseOffset / 100.0f) * 1.3f;
-
-                // Compute a wave position based on the hexagon's y position and the current time
-                float wavePosition = (_HexagonYPosition + ((_Time.y + _RandomPhaseOffset) 
-                    * waveSpeed)) / 10.f;
-
-                // Compute a displacement based on the wave position
-                float displacement = sin(wavePosition) * waveAmplitude;
-
-                displacement *= (_SampledNoise * noiseScale);
+                // Compute a displacement based on the sampled noise
+                float displacement = _SampledNoise * displacementAmplitude;
 
                 // Modulate the displacement with y-coordinate
                 // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
-                float displacementFactor = smoothstep(-0.55, 1.0, _HexagonYPosition / _FlameHeight);
+                float displacementFactor = smoothstep(-0.8, 1.0, _HexagonYPosition / _FlameHeight);
 
                 // Apply the displacement factor to the displacement
                 displacement *= displacementFactor;

@@ -229,21 +229,17 @@ public class FlameMovementController : MonoBehaviour
         SetupFlame(newFlame);
     }
 
-    private void AddRandomPerlinNoiseTexture(GameObject flame)
-    {
-        PerlinNoiseSampler perlinNoiseSampler = flame.AddComponent<PerlinNoiseSampler>();
-        Texture2D noiseTexture = noiseTextures[Random.Range(0, noiseTextures.Length)];
-        perlinNoiseSampler.perlinNoiseTexture = noiseTexture;
-    }
-
     private void SetupFlame(GameObject rootHexagonStack)
     {
         SetHexagonsRandomDelay(rootHexagonStack);
 
-        if(!rootHexagonStack.name.Contains("Clone"))
+        if (!rootHexagonStack.name.Contains("Clone"))
             SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
         else
-            AddRandomPerlinNoiseTexture(rootHexagonStack);
+        {
+            SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
+            simplexNoise.seed = flames.Count * 10;
+        }
 
         PlaceFlameOnTable(rootHexagonStack);
         SetHexagonsHeight(rootHexagonStack);
