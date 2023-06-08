@@ -20,18 +20,41 @@ public class SimplexNoise : MonoBehaviour
     public float noiseSpeed;
     public float seed;
 
+    private int numberOfHexagons;
+
     // Start is called before the first frame update
     void Start()
     {
-        noiseSpeed = UnityEngine.Random.Range(0.5f, 1.0f);
+        // noiseSpeed = UnityEngine.Random.Range(0.5f, 1.0f);
+        noiseSpeed = 2.0f;
+        numberOfHexagons = transform.childCount;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float noiseValue = Generate(seed, Time.time * noiseSpeed);
+        //// float noiseValue = Generate(seed, Time.time * noiseSpeed);
+        //float[] noiseValues = new float[numberOfHexagons];
 
-        SetNoiseOfHexagons(noiseValue);
+        //for (int i = 0; i < numberOfHexagons; ++i)
+        //{
+        //    noiseValues[i] = Generate(seed + i, Time.time * noiseSpeed);
+        //}
+
+        //SetNoiseOfHexagons(noiseValues);
+
+        float[] noiseValues = new float[numberOfHexagons];
+
+        for (int i = 0; i < numberOfHexagons; ++i)
+        {
+            float seedOffset = i > 0 ? noiseValues[i - 1] : 0; // take the noise value of the hexagon below if it exists
+            seedOffset += i < numberOfHexagons - 1 ? noiseValues[i + 1] : 0; // add the noise value of the hexagon above if it exists
+
+            // generate the noise value as the average of the seedOffset and the hexagon's own noise value
+            noiseValues[i] = (Generate(seed + i, Time.time * noiseSpeed) + seedOffset) / (i == 0 || i == numberOfHexagons - 1 ? 2 : 3);
+        }
+
+        SetNoiseOfHexagons(noiseValues);
     }
 
     private static int FastFloor(float x)
@@ -114,15 +137,18 @@ public class SimplexNoise : MonoBehaviour
         return 70.0f * (n0 + n1 + n2);
     }
 
-    void SetNoiseOfHexagons(float noise)
+    void SetNoiseOfHexagons(float[] noiseValues)
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform hexagon = transform.GetChild(i);
             MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
 
-            meshRenderer.material.SetFloat("_SampledNoise", noise);
-            meshRenderer.material.SetFloat("_HexagonYPosition", i);
+            // use the noise value to modulate the position of the hexagon along the y-axis, maintaining its relative position in the stack
+            // hexagon.localPosition = new Vector3(hexagon.localPosition.x, i + noiseValues[i] * 0.01f, hexagon.localPosition.z); // adjust the 0.01f multiplier as needed
+
+            meshRenderer.material.SetFloat("_SampledNoise", noiseValues[i]);
+            meshRenderer.material.SetFloat("_HexagonYPosition", i * hexagon.localScale.y);
         }
     }
 }

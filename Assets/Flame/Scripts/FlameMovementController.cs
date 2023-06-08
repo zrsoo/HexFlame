@@ -243,8 +243,8 @@ public class FlameMovementController : MonoBehaviour
             SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
         else
         {
-            SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-            simplexNoise.seed = flames.Count * 10;
+            //SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
+            //simplexNoise.seed = flames.Count * 10;
         }
 
         PlaceFlameOnTable(rootHexagonStack);
