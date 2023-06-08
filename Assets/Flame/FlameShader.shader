@@ -69,7 +69,7 @@ Shader "Unlit/FlameShader"
                 // 0.08 - For tabletop flames
                 // 3.08 - For campfire flames
                 // Control the amplitude of the displacement
-                float displacementAmplitude = 0.15f; 
+                float displacementAmplitude = 0.07f; 
 
                 // Compute a displacement based on the sampled noise
                 float displacement = _SampledNoise * displacementAmplitude;
@@ -83,7 +83,7 @@ Shader "Unlit/FlameShader"
 
                 // Apply the displacement factor to the displacement
                 displacement *= displacementFactor;
-                displacement *= displacementFactorMirrored;
+                // displacement *= displacementFactorMirrored;
 
                 // Adjust the vertex position based on the displacement
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));

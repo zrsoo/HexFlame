@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SimplexNoise : MonoBehaviour
@@ -22,39 +23,102 @@ public class SimplexNoise : MonoBehaviour
 
     private int numberOfHexagons;
 
+    private List<float> middleHexagonNoiseHistory = new List<float>();
+    private int maxHistoryLength;
+
     // Start is called before the first frame update
     void Start()
     {
         // noiseSpeed = UnityEngine.Random.Range(0.5f, 1.0f);
-        noiseSpeed = 2.0f;
+        noiseSpeed = 1.0f;
         numberOfHexagons = transform.childCount;
+
+        maxHistoryLength = numberOfHexagons;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //// float noiseValue = Generate(seed, Time.time * noiseSpeed);
-        //float[] noiseValues = new float[numberOfHexagons];
+        // Get the index of the middle hexagon
+        int middleIndex = numberOfHexagons / 2;
 
-        //for (int i = 0; i < numberOfHexagons; ++i)
-        //{
-        //    noiseValues[i] = Generate(seed + i, Time.time * noiseSpeed);
-        //}
+        // Generate the noise value for the middle hexagon
+        float middleNoiseValue = Generate(seed + middleIndex, Time.time * noiseSpeed);
 
-        //SetNoiseOfHexagons(noiseValues);
+        // Add this value to the history
+        middleHexagonNoiseHistory.Insert(0, middleNoiseValue);
 
-        float[] noiseValues = new float[numberOfHexagons];
-
-        for (int i = 0; i < numberOfHexagons; ++i)
+        // If the history is too long, remove the oldest value
+        if (middleHexagonNoiseHistory.Count > maxHistoryLength)
         {
-            float seedOffset = i > 0 ? noiseValues[i - 1] : 0; // take the noise value of the hexagon below if it exists
-            seedOffset += i < numberOfHexagons - 1 ? noiseValues[i + 1] : 0; // add the noise value of the hexagon above if it exists
-
-            // generate the noise value as the average of the seedOffset and the hexagon's own noise value
-            noiseValues[i] = (Generate(seed + i, Time.time * noiseSpeed) + seedOffset) / (i == 0 || i == numberOfHexagons - 1 ? 2 : 3);
+            middleHexagonNoiseHistory.RemoveAt(middleHexagonNoiseHistory.Count - 1);
         }
 
-        SetNoiseOfHexagons(noiseValues);
+        // Now, for each hexagon, use a value from the history based on the hexagon's distance from the middle
+        for (int i = 0; i < numberOfHexagons; ++i)
+        {
+            // Calculate the distance from the middle
+            int distanceFromMiddle = Mathf.Abs(i - middleIndex);
+
+            // If the distance is greater than the history length, use the oldest value in the history
+            if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
+            {
+                distanceFromMiddle = middleHexagonNoiseHistory.Count - 1;
+            }
+
+            // Set the noise value of the hexagon
+            SetNoiseOfHexagon(i, middleHexagonNoiseHistory[distanceFromMiddle]);
+        }
+
+        //// Get the index of the middle hexagon
+        //int middleIndex = numberOfHexagons / 2;
+
+        //// Generate the noise value for the middle hexagon
+        //float middleNoiseValue = Generate(seed + middleIndex, Time.time * noiseSpeed);
+
+        //// Add this value to the history
+        //middleHexagonNoiseHistory.Insert(0, middleNoiseValue);
+
+        //// If the history is too long, remove the oldest value
+        //if (middleHexagonNoiseHistory.Count > maxHistoryLength)
+        //{
+        //    middleHexagonNoiseHistory.RemoveAt(middleHexagonNoiseHistory.Count - 1);
+        //}
+
+        //// Now, for each hexagon, use a value from the history based on the hexagon's distance from the middle
+        //for (int i = 0; i < numberOfHexagons; ++i)
+        //{
+        //    // Calculate the distance from the middle
+        //    int distanceFromMiddle = Mathf.Abs(i - middleIndex);
+
+        //    // If the distance is greater than the history length, use the oldest value in the history
+        //    if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
+        //    {
+        //        distanceFromMiddle = middleHexagonNoiseHistory.Count - 1;
+        //    }
+
+        //    float amplitude;
+        //    if (i <= middleIndex) // for the base to middle, the amplitude increases linearly
+        //    {
+        //        amplitude = (float)i / middleIndex;
+        //    }
+        //    else // for the middle to top, the amplitude remains 1
+        //    {
+        //        amplitude = 1f;
+        //    }
+
+        //    // Set the noise value of the hexagon
+        //    SetNoiseOfHexagon(i, middleHexagonNoiseHistory[distanceFromMiddle] * amplitude);
+        //}
+    }
+
+    void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
+    {
+        Transform hexagon = transform.GetChild(hexagonIndex);
+        MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
+
+        meshRenderer.material.SetFloat("_SampledNoise", noiseValue);
+        meshRenderer.material.SetFloat("_HexagonYPosition", hexagonIndex * hexagon.localScale.y);
     }
 
     private static int FastFloor(float x)
