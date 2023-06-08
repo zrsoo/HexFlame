@@ -45,7 +45,7 @@ public class FlameMovementController : MonoBehaviour
         PlaceFlameOnTable(gameObject);
         GenerateRandomMovementDirection();
 
-        noiseTextures = Resources.LoadAll<Texture2D>("NoiseTextures");
+        // noiseTextures = Resources.LoadAll<Texture2D>("NoiseTextures");
 
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));

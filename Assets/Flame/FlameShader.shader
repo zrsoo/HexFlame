@@ -105,7 +105,7 @@ Shader "Unlit/FlameShader"
                 fixed4 color;
 
                 // Changed from 0.0
-                float t = smoothstep(-0.5, 1.0, dist);
+                float t = smoothstep(-0.2, 1.0, dist);
                 color = lerp(innerColor, outerColor, t);
 
                 if(dist > 0.80) {
