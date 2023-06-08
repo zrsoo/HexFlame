@@ -147,8 +147,8 @@ public class FlameMovementController : MonoBehaviour
             flames.Add(newFlame);
 
             StackHexagons stackHexagons = newFlame.GetComponent<StackHexagons>();
-            stackHexagons.distanceBetweenCenters *= 0.15f;
-            newFlame.transform.localScale *= 0.15f;
+            // stackHexagons.distanceBetweenCenters *= 0.15f;
+            // newFlame.transform.localScale *= 0.15f;
 
             newFlame.SetActive(false);
 

@@ -64,7 +64,8 @@ public class FlameHeightController : MonoBehaviour
     private void UpdateFlameHeight()
     {
         float prevHeight = transform.localScale.y;
-        float prevElevation = transform.localPosition.y;
+        // CHECK
+        float prevWitdh = transform.localScale.x;
 
         // Determine the current direction of growth.
         if (transform.localScale.y >= maxFlameHeight)
@@ -79,11 +80,13 @@ public class FlameHeightController : MonoBehaviour
         // Adjust growth speed based on direction and randomness.
         float currentGrowthSpeed = baseGrowthSpeed * randomGrowthFactor;
         float currentHeight = prevHeight + Time.deltaTime * currentGrowthSpeed * (isGrowing ? 1 : -1);
+        float currentWidth = prevWitdh + Time.deltaTime * currentGrowthSpeed * (isGrowing ? 1 : -1);
 
         // Keep the currentHeight within bounds.
         currentHeight = Mathf.Clamp(currentHeight, minFlameHeight, maxFlameHeight);
+        currentWidth = Mathf.Clamp(currentWidth, minFlameHeight, maxFlameHeight);
 
-        transform.localScale = new Vector3(transform.localScale.x, currentHeight, transform.localScale.z);
+        transform.localScale = new Vector3(currentWidth, currentHeight, transform.localScale.z);
         FlameMovementController.PlaceFlameOnTable(gameObject);
     }
 }
