@@ -66,12 +66,16 @@ Shader "Unlit/FlameShader"
             {
                 v2f o;
 
+                // 0.08 - For tabletop flames
+                // 3.08 - For campfire flames
                 // Control the amplitude of the displacement
                 float displacementAmplitude = 0.08f; 
 
                 // Compute a displacement based on the sampled noise
                 float displacement = _SampledNoise * displacementAmplitude;
 
+                // -0.8 - For tabletop flames
+                // -0.3 - For campfire flames
                 // Modulate the displacement with y-coordinate
                 // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
                 float displacementFactor = smoothstep(-0.8, 1.0, _HexagonYPosition / _FlameHeight);

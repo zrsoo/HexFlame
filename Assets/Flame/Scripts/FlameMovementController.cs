@@ -55,6 +55,7 @@ public class FlameMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Comment next 3 lines for stationary flame
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
         LeaveTrail();
