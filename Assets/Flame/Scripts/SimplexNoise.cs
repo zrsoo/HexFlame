@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -34,6 +35,8 @@ public class SimplexNoise : MonoBehaviour
 
     private MeshRenderer[] hexagonsMeshRenderers;
 
+    private float elapsedTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,15 +50,19 @@ public class SimplexNoise : MonoBehaviour
         hexagonsMeshRenderers = new MeshRenderer[numberOfHexagons];
         for (int i = 0; i < numberOfHexagons; ++i)
         {
-           hexagonsMeshRenderers[i] = transform.GetChild(i).GetComponent<MeshRenderer>();
+            hexagonsMeshRenderers[i] = transform.GetChild(i).GetComponent<MeshRenderer>();
         }
+
+        elapsedTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+
         // Generate the noise value for the middle hexagon
-        float middleNoiseValue = Generate(seed + middleIndex, Time.time * noiseSpeed);
+        float middleNoiseValue = Generate(seed + middleIndex, elapsedTime * noiseSpeed);
 
         // Add this value to the history
         middleHexagonNoiseHistory.Insert(0, middleNoiseValue);
@@ -86,11 +93,7 @@ public class SimplexNoise : MonoBehaviour
     // TODO remove set of _HexagonYPosition from here, only set it once in FlameMovementController or somewhere
     void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
     {
-        // Transform hexagon = transform.GetChild(hexagonIndex);
-        // MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
-
         hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_SampledNoise", noiseValue);
-        // hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_HexagonYPosition", hexagonIndex * hexagon.localScale.y);
     }
 
     private static int FastFloor(float x)
@@ -171,5 +174,10 @@ public class SimplexNoise : MonoBehaviour
         }
 
         return 70.0f * (n0 + n1 + n2);
+    }
+
+    public void setMeshRenderers(MeshRenderer[] meshRenderers)
+    {
+        hexagonsMeshRenderers = meshRenderers;
     }
 }

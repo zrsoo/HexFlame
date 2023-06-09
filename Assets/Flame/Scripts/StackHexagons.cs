@@ -19,6 +19,8 @@ public class StackHexagons : MonoBehaviour
 
     private void Start()
     {
+        Transform transform = this.transform;
+
         meshRenderers = new MeshRenderer[count];
         distanceBetweenCenters *= scale;
 
@@ -30,7 +32,7 @@ public class StackHexagons : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject hexagon = Instantiate(hexagonPrefab,
-                new Vector3(transform.position.x, transform.position.y + i * distanceBetweenCenters, transform.position.z), Quaternion.identity, this.transform);
+                new Vector3(transform.position.x, transform.position.y + i * distanceBetweenCenters, transform.position.z), Quaternion.identity, transform);
             DrawHexagon hexagonScript = hexagon.GetComponent<DrawHexagon>();
 
             // Adjust the distribution of the sine function using a power function
@@ -54,7 +56,7 @@ public class StackHexagons : MonoBehaviour
 
         flameController = gameObject.GetComponent<FlameController>();
 
-        Debug.Log("STACK HEXAGONS: " + hexagonStackHeight);
+        // Debug.Log("STACK HEXAGONS: " + hexagonStackHeight);
 
         flameController.GetHexagonMeshRenderers(meshRenderers);
     }

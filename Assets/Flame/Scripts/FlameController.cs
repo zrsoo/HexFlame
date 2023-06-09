@@ -18,16 +18,16 @@ public class FlameController : MonoBehaviour
         
     }
 
-    public void GetHexagonMeshRenderers(MeshRenderer[] meshRenderers2)
+    public void GetHexagonMeshRenderers(MeshRenderer[] meshRenderers)
     {
         numberOfHexagons = gameObject.GetComponent<StackHexagons>().count;
-        meshRenderers = new MeshRenderer[numberOfHexagons];
+        this.meshRenderers = new MeshRenderer[numberOfHexagons];
 
         // Debug.Log("FLAME");
         // Debug.Log("NUMBERHEX: " + numberOfHexagons);
         for (int i = 0; i < numberOfHexagons; ++i)
         {
-            this.meshRenderers[i] = meshRenderers2[i];
+            this.meshRenderers[i] = meshRenderers[i];
             // Debug.Log("HexagonMeshRenderer: " + this.meshRenderers[i].name);
         }
     }
@@ -39,7 +39,7 @@ public class FlameController : MonoBehaviour
 
     private void SetHexagonsHeight()
     {
-        Debug.Log(numberOfHexagons);
+        // Debug.Log(numberOfHexagons);
 
         for (int i = 0; i < numberOfHexagons; i++)
         {
@@ -83,5 +83,10 @@ public class FlameController : MonoBehaviour
         {
             meshRenderers[i].material.SetFloat("_FlameOpacity", opacity);
         }
+    }
+
+    public MeshRenderer[] getMeshRenderers()
+    {
+        return meshRenderers;
     }
 }

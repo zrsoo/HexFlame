@@ -25,16 +25,16 @@ public class FlameMovementController : MonoBehaviour
     public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
     private List<FlameController> flameControllers;
-    int numberOfFlames;
-    private MeshRenderer[] meshRenderers;
 
     private FlameController flameController;
+
+    Transform gameObjectTransform;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameObjectTransform = transform;
         flameController = gameObject.GetComponent<FlameController>();
-        meshRenderers = new MeshRenderer[20000];
 
         // SET FRAMERATE
         Application.targetFrameRate = 500;
@@ -58,8 +58,6 @@ public class FlameMovementController : MonoBehaviour
         PlaceFlameOnTable(gameObject);
 
         flameControllers.Add(flameController);
-
-        numberOfFlames = 0;
     }
 
     // Update is called once per frame
@@ -76,8 +74,10 @@ public class FlameMovementController : MonoBehaviour
     public static void PlaceFlameOnTable(GameObject flameStack)
     {
         RaycastHit hitPlace;
+        Transform flameStackTransform = flameStack.transform;
+
         // Cast a ray straight down.
-        if (Physics.Raycast(flameStack.transform.position, -Vector3.up, out hitPlace))
+        if (Physics.Raycast(flameStackTransform.position, -Vector3.up, out hitPlace))
         {
             // If it hits the table.
             if (hitPlace.collider.gameObject.CompareTag("Table"))
@@ -85,12 +85,12 @@ public class FlameMovementController : MonoBehaviour
                 if (flameStack.name.Contains("TRAIL") && !flameStack.name.Contains("BIG"))
                 {
                     // Position flame on table but not slightly above since flame is already small.
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.005f, 0);
+                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.005f, 0);
                 }
                 else
                 {
                     // Position flame on table (slightly above).
-                    flameStack.transform.position = hitPlace.point + new Vector3(0, 0.005f + ComputeYPosition(flameStack.transform.localScale.y), 0);
+                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.005f + ComputeYPosition(flameStackTransform.localScale.y), 0);
                 }
             }
         }
@@ -149,11 +149,11 @@ public class FlameMovementController : MonoBehaviour
 
     private void LeaveTrail()
     {
-        float distanceTraveled = Vector3.Distance(transform.position, lastTrailPosition);
+        float distanceTraveled = Vector3.Distance(gameObjectTransform.position, lastTrailPosition);
 
         if (distanceTraveled > trailSpawnPositionDifference)
         {
-            GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+            GameObject newFlame = Instantiate(flamePrefab, gameObjectTransform.position - new Vector3(0.0f, 0.0f, 0.01f), gameObjectTransform.rotation);
 
             // newFlame.SetActive(false);
 
@@ -163,23 +163,23 @@ public class FlameMovementController : MonoBehaviour
             // newFlame.SetActive(true);
             newFlame.name += "TRAIL";
 
-            lastTrailPosition = transform.position;
+            lastTrailPosition = gameObjectTransform.position;
         }
     }
 
     private IEnumerator GrowTrailFlame(GameObject trailFlame)
     {
         float growthSpeed = 0.0001f;
+        Transform trailFlameTransform = trailFlame.transform;
 
-
-        while (trailFlame.transform.localScale.y <= trailFlameGrowthThreshold)
+        while (trailFlameTransform.localScale.y <= trailFlameGrowthThreshold)
         {
-            float prevHeight = trailFlame.transform.localScale.y;
+            float prevHeight = trailFlameTransform.localScale.y;
 
-            if (trailFlame.transform.localScale.x < 1)
-                trailFlame.transform.localScale += new Vector3(growthSpeed, growthSpeed, 0);
+            if (trailFlameTransform.localScale.x < 1)
+                trailFlameTransform.localScale += new Vector3(growthSpeed, growthSpeed, 0);
             else
-                trailFlame.transform.localScale += new Vector3(0, growthSpeed, 0);
+                trailFlameTransform.localScale += new Vector3(0, growthSpeed, 0);
 
             PlaceFlameOnTable(trailFlame);
 
@@ -228,7 +228,7 @@ public class FlameMovementController : MonoBehaviour
 
         
         bool isBig = Random.value <= trailFlameGrowthChance;
-        Debug.Log(isBig);
+        // Debug.Log(isBig);
         // Start growth process with certain probability.
         if (isBig)
         {
@@ -246,7 +246,7 @@ public class FlameMovementController : MonoBehaviour
         flameControllers.Add(flameController);
         flameController.SetupFlame();
 
-        SetupFlame(newFlame);
+        AddSimplexNoiseAndPlaceOnTable(newFlame, flameController.getMeshRenderers());
 
         StartCoroutine(RiseFromTable(newFlame, flameController, 0.5f));
     }
@@ -257,11 +257,12 @@ public class FlameMovementController : MonoBehaviour
         flameController.SetupFlame();
     }
 
-    private void SetupFlame(GameObject rootHexagonStack)
+    private void AddSimplexNoiseAndPlaceOnTable(GameObject rootHexagonStack, MeshRenderer[] meshRenderers)
     {
         if (rootHexagonStack.name.Contains("Clone"))
         {
             SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
+            // simplexNoise.setMeshRenderers(meshRenderers);
             simplexNoise.seed = flameControllers.Count * 1000;
         }
 
