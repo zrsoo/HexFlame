@@ -90,7 +90,7 @@ public class FlameMovementController : MonoBehaviour
                 else
                 {
                     // Position flame on table (slightly above).
-                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.005f + ComputeYPosition(flameStackTransform.localScale.y), 0);
+                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f + ComputeYPosition(flameStackTransform.localScale.y), 0);
                 }
             }
         }
@@ -99,7 +99,7 @@ public class FlameMovementController : MonoBehaviour
     public static float ComputeYPosition(float scale)
     {
         float scale1 = 0.15f, yPos1 = 0.0f;
-        float scale2 = 0.98f, yPos2 = 0.025f;
+        float scale2 = 0.98f, yPos2 = 0.014f;
 
         float m = (yPos2 - yPos1) / (scale2 - scale1);
         float b = yPos1 - m * scale1;

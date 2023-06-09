@@ -40,8 +40,8 @@ public class SimplexNoise : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // noiseSpeed = UnityEngine.Random.Range(0.5f, 1.0f);
-        noiseSpeed = 1.0f;
+        noiseSpeed = UnityEngine.Random.Range(0.5f, 1.5f);
+        
         numberOfHexagons = transform.childCount;
 
         maxHistoryLength = numberOfHexagons;

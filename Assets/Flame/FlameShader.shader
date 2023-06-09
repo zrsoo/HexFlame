@@ -69,7 +69,7 @@ Shader "Unlit/FlameShader"
                 // 0.08 - For tabletop flames
                 // 3.08 - For campfire flames
                 // Control the amplitude of the displacement
-                float displacementAmplitude = 0.07f; 
+                float displacementAmplitude = 0.05f; 
 
                 // Compute a displacement based on the sampled noise
                 float displacement = _SampledNoise * displacementAmplitude;
