@@ -23,11 +23,15 @@ public class FlameMovementController : MonoBehaviour
     public float innerRedChannel, innerGreenChannel, innerBlueChannel;
     public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
-    private List<GameObject> flames; 
+    private List<GameObject> flames;
+    int numberOfFlames;
+    private MeshRenderer[] meshRenderers;
 
     // Start is called before the first frame update
     void Start()
     {
+        meshRenderers = new MeshRenderer[20000];
+
         // SET FRAMERATE
         Application.targetFrameRate = 500;
 
@@ -49,6 +53,8 @@ public class FlameMovementController : MonoBehaviour
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
         flames.Add(gameObject);
+
+        numberOfFlames = 0;
     }
 
     // Update is called once per frame
@@ -59,7 +65,7 @@ public class FlameMovementController : MonoBehaviour
         // KeepFlameOnSurface();
         
         // if(flames.Count < 2)
-        // LeaveTrail();
+        LeaveTrail();
     }
 
     public static void PlaceFlameOnTable(GameObject flameStack)
@@ -347,6 +353,28 @@ public class FlameMovementController : MonoBehaviour
         {
             SetHexagonsInnerColor(flame, innerRedChannel, innerGreenChannel, innerBlueChannel);
             SetHexagonsOuterColor(flame, outerRedChannel, outerGreenChannel, outerBlueChannel);
+        }
+    }
+
+    public void GetHexagonMeshRenderers(int numberOfHexagons, MeshRenderer[] meshRenderers)
+    {
+        numberOfFlames++;
+        int flameIndex = numberOfFlames;
+
+        int firstHexagonIndex = numberOfHexagons * (flameIndex - 1);
+        int lastHexagonIndex = firstHexagonIndex + numberOfHexagons - 1;
+
+        Debug.Log("FlameIndex: " + flameIndex);
+        Debug.Log("FirstHexagonIndex: " + firstHexagonIndex);
+        Debug.Log("LastHexagonIndex: " + lastHexagonIndex);
+
+        int hexagonIndex = 0;
+
+        for(int i = firstHexagonIndex; i <= lastHexagonIndex; ++i)
+        {
+            this.meshRenderers[i] = meshRenderers[hexagonIndex];
+            Debug.Log("HexagonMeshRenderer: " + this.meshRenderers[i].name);
+            hexagonIndex++;
         }
     }
 }
