@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class SimplexNoise : MonoBehaviour
 {
@@ -23,8 +24,15 @@ public class SimplexNoise : MonoBehaviour
 
     private int numberOfHexagons;
 
+    // TODO maybe change to circular array
     private List<float> middleHexagonNoiseHistory = new List<float>();
     private int maxHistoryLength;
+
+    private int middleIndex;
+
+    private int distanceFromMiddle;
+
+    private MeshRenderer[] hexagonsMeshRenderers;
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +42,18 @@ public class SimplexNoise : MonoBehaviour
         numberOfHexagons = transform.childCount;
 
         maxHistoryLength = numberOfHexagons;
+        middleIndex = numberOfHexagons / 2;
+
+        hexagonsMeshRenderers = new MeshRenderer[numberOfHexagons];
+        for (int i = 0; i < numberOfHexagons; ++i)
+        {
+           hexagonsMeshRenderers[i] = transform.GetChild(i).GetComponent<MeshRenderer>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Get the index of the middle hexagon
-        int middleIndex = numberOfHexagons / 2;
-
         // Generate the noise value for the middle hexagon
         float middleNoiseValue = Generate(seed + middleIndex, Time.time * noiseSpeed);
 
@@ -58,7 +70,7 @@ public class SimplexNoise : MonoBehaviour
         for (int i = 0; i < numberOfHexagons; ++i)
         {
             // Calculate the distance from the middle
-            int distanceFromMiddle = Mathf.Abs(i - middleIndex);
+            distanceFromMiddle = Mathf.Abs(i - middleIndex);
             
             // If the distance is greater than the history length, use the oldest value in the history
             if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
@@ -74,11 +86,11 @@ public class SimplexNoise : MonoBehaviour
     // TODO remove set of _HexagonYPosition from here, only set it once in FlameMovementController or somewhere
     void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
     {
-        Transform hexagon = transform.GetChild(hexagonIndex);
-        MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
+        // Transform hexagon = transform.GetChild(hexagonIndex);
+        // MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
 
-        meshRenderer.material.SetFloat("_SampledNoise", noiseValue);
-        meshRenderer.material.SetFloat("_HexagonYPosition", hexagonIndex * hexagon.localScale.y);
+        hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_SampledNoise", noiseValue);
+        // hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_HexagonYPosition", hexagonIndex * hexagon.localScale.y);
     }
 
     private static int FastFloor(float x)
@@ -91,7 +103,7 @@ public class SimplexNoise : MonoBehaviour
         return g[0] * x + g[1] * y;
     }
 
-    private static int[][] grad3 = new int[][] {
+    private static readonly int[][] grad3 = new int[][] {
         new int[] {1,1,0}, new int[] {-1,1,0}, new int[] {1,-1,0}, new int[] {-1,-1,0},
         new int[] {1,0,1}, new int[] {-1,0,1}, new int[] {1,0,-1}, new int[] {-1,0,-1},
         new int[] {0,1,1}, new int[] {0,-1,1}, new int[] {0,1,-1}, new int[] {0,-1,-1}
@@ -159,20 +171,5 @@ public class SimplexNoise : MonoBehaviour
         }
 
         return 70.0f * (n0 + n1 + n2);
-    }
-
-    void SetNoiseOfHexagons(float[] noiseValues)
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform hexagon = transform.GetChild(i);
-            MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
-
-            // use the noise value to modulate the position of the hexagon along the y-axis, maintaining its relative position in the stack
-            // hexagon.localPosition = new Vector3(hexagon.localPosition.x, i + noiseValues[i] * 0.01f, hexagon.localPosition.z); // adjust the 0.01f multiplier as needed
-
-            meshRenderer.material.SetFloat("_SampledNoise", noiseValues[i]);
-            meshRenderer.material.SetFloat("_HexagonYPosition", i * hexagon.localScale.y);
-        }
     }
 }
