@@ -23,7 +23,7 @@ public class FlameMovementController : MonoBehaviour
     public float innerRedChannel, innerGreenChannel, innerBlueChannel;
     public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
-    private List<GameObject> flames;
+    private List<FlameController> flameControllers;
     int numberOfFlames;
     private MeshRenderer[] meshRenderers;
 
@@ -38,7 +38,7 @@ public class FlameMovementController : MonoBehaviour
         // SET FRAMERATE
         Application.targetFrameRate = 500;
 
-        flames = new List<GameObject>();
+        flameControllers = new List<FlameController>();
 
         speed = 0.01f;
 
@@ -55,7 +55,8 @@ public class FlameMovementController : MonoBehaviour
         // Set initial flame's height
         StartCoroutine(DelayedSetupInitialFlame());
         PlaceFlameOnTable(gameObject);
-        flames.Add(gameObject);
+
+        flameControllers.Add(flameController);
 
         numberOfFlames = 0;
     }
@@ -153,10 +154,6 @@ public class FlameMovementController : MonoBehaviour
         {
             bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
-                        
-
-            flames.Add(newFlame);
-
 
             newFlame.SetActive(false);
 
@@ -240,8 +237,12 @@ public class FlameMovementController : MonoBehaviour
     private IEnumerator DelayedSetupTrailingFlame(GameObject newFlame)
     {
         yield return null;  // Wait for the next frame
+
         FlameController flameController = newFlame.GetComponent<FlameController>();
+
+        flameControllers.Add(flameController);
         flameController.SetupFlame();
+
         SetupFlame(newFlame);
     }
 
@@ -256,14 +257,10 @@ public class FlameMovementController : MonoBehaviour
         if (rootHexagonStack.name.Contains("Clone"))
         {
             SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-            simplexNoise.seed = flames.Count * 1000;
+            simplexNoise.seed = flameControllers.Count * 1000;
         }
 
         PlaceFlameOnTable(rootHexagonStack);
-
-        // SetHexagonsHeight(rootHexagonStack);
-        SetHexagonsInnerColor(rootHexagonStack, innerRedChannel, innerGreenChannel, innerBlueChannel);
-        SetHexagonsOuterColor(rootHexagonStack, outerRedChannel, outerGreenChannel, outerBlueChannel);
     }
 
     private void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
@@ -277,35 +274,6 @@ public class FlameMovementController : MonoBehaviour
         }
     }
 
-    private void SetHexagonsHeight(GameObject rootHexagonStack)
-    {
-        float flameHeight = GetFlameHeight(rootHexagonStack);
-
-        Debug.Log(flameHeight);
-
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
-            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
-
-            hexagonRenderer.material.SetFloat("_HexagonYPosition", i);
-            hexagonRenderer.material.SetFloat("_FlameHeight", flameHeight);
-        }
-    }
-
-    private void SetHexagonsRandomDelay(GameObject rootHexagonStack)
-    {
-        float randomDelay = Random.Range(0.0f, 100.0f);
-
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
-            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
-
-            hexagonRenderer.material.SetFloat("_RandomPhaseOffset", randomDelay);
-        }
-    }
-
     private static void SetBaseGrowthSpeed(GameObject rootHexagonStack, float speed)
     {
         if (rootHexagonStack.name.Contains("Clone"))
@@ -315,61 +283,12 @@ public class FlameMovementController : MonoBehaviour
         }
     }
 
-    private void SetHexagonsInnerColor(GameObject rootHexagonStack, float red, float green, float blue)
-    {
-        red /= 255.0f;
-        green /= 255.0f;
-        blue /= 255.0f;
-
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
-            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
-
-            hexagonRenderer.material.SetFloat("_RedChannel", red);
-            hexagonRenderer.material.SetFloat("_GreenChannel", green);
-            hexagonRenderer.material.SetFloat("_BlueChannel", blue);
-        }
-    }
-
-    private void SetHexagonsOuterColor(GameObject rootHexagonStack, float red, float green, float blue)
-    {
-        red /= 255.0f;
-        green /= 255.0f;
-        blue /= 255.0f;
-
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
-            MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
-
-            hexagonRenderer.material.SetFloat("_OuterRedChannel", red);
-            hexagonRenderer.material.SetFloat("_OuterGreenChannel", green);
-            hexagonRenderer.material.SetFloat("_OuterBlueChannel", blue);
-        }
-    }
-
-    private float GetFlameHeight(GameObject rootHexagonStack)
-    {
-        float totalHeight = 0;
-
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
-
-            // Assuming the hexagon's height is represented by the y-scale of its local transform
-            totalHeight += hexagonTransform.localScale.y;
-        }
-
-        return totalHeight;
-    }
-
     public void OnColorChanged()
     {
-        foreach(GameObject flame in flames)
+        foreach(FlameController flameController in flameControllers)
         {
-            SetHexagonsInnerColor(flame, innerRedChannel, innerGreenChannel, innerBlueChannel);
-            SetHexagonsOuterColor(flame, outerRedChannel, outerGreenChannel, outerBlueChannel);
+            flameController.SetHexagonsInnerColor(innerRedChannel, innerGreenChannel, innerBlueChannel);
+            flameController.SetHexagonsOuterColor(outerRedChannel, outerGreenChannel, outerBlueChannel);
         }
     }
 }

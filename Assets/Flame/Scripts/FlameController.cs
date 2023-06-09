@@ -50,18 +50,31 @@ public class FlameController : MonoBehaviour
         }
     }
 
-    private float GetFlameHeight()
+    public void SetHexagonsInnerColor(float red, float green, float blue)
     {
-        float totalHeight = 0;
+        red /= 255.0f;
+        green /= 255.0f;
+        blue /= 255.0f;
 
-        for (int i = 0; i < gameObject.transform.childCount; i++)
+        for (int i = 0; i < numberOfHexagons; i++)
         {
-            Transform hexagonTransform = gameObject.transform.GetChild(i);
-
-            // Assuming the hexagon's height is represented by the y-scale of its local transform
-            totalHeight += hexagonTransform.localScale.y;
+            meshRenderers[i].material.SetFloat("_RedChannel", red);
+            meshRenderers[i].material.SetFloat("_GreenChannel", green);
+            meshRenderers[i].material.SetFloat("_BlueChannel", blue);
         }
+    }
 
-        return totalHeight;
+    public void SetHexagonsOuterColor(float red, float green, float blue)
+    {
+        red /= 255.0f;
+        green /= 255.0f;
+        blue /= 255.0f;
+
+        for (int i = 0; i < numberOfHexagons; i++)
+        {
+            meshRenderers[i].material.SetFloat("_OuterRedChannel", red);
+            meshRenderers[i].material.SetFloat("_OuterGreenChannel", green);
+            meshRenderers[i].material.SetFloat("_OuterBlueChannel", blue);
+        }
     }
 }
