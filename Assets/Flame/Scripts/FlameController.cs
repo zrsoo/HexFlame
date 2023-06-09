@@ -35,8 +35,6 @@ public class FlameController : MonoBehaviour
     public void SetupFlame()
     {
         SetHexagonsHeight();
-        // SetHexagonsInnerColor(rootHexagonStack, innerRedChannel, innerGreenChannel, innerBlueChannel);
-        // SetHexagonsOuterColor(rootHexagonStack, outerRedChannel, outerGreenChannel, outerBlueChannel);
     }
 
     private void SetHexagonsHeight()
@@ -75,6 +73,15 @@ public class FlameController : MonoBehaviour
             meshRenderers[i].material.SetFloat("_OuterRedChannel", red);
             meshRenderers[i].material.SetFloat("_OuterGreenChannel", green);
             meshRenderers[i].material.SetFloat("_OuterBlueChannel", blue);
+        }
+    }
+
+    public void SetHexagonsOpacity(float opacity)
+    {
+        // Loop over the children of the root GameObject and set their opacity.
+        for (int i = 0; i < numberOfHexagons; i++)
+        {
+            meshRenderers[i].material.SetFloat("_FlameOpacity", opacity);
         }
     }
 }

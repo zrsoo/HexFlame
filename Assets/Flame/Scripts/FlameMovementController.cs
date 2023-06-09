@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public class FlameMovementController : MonoBehaviour
 {
@@ -65,8 +66,8 @@ public class FlameMovementController : MonoBehaviour
     void Update()
     {
         // Comment next 3 lines for stationary flame
-        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-        // KeepFlameOnSurface();
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        KeepFlameOnSurface();
         
         // if(flames.Count < 2)
         LeaveTrail();
@@ -152,18 +153,15 @@ public class FlameMovementController : MonoBehaviour
 
         if (distanceTraveled > trailSpawnPositionDifference)
         {
-            bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
 
-            newFlame.SetActive(false);
+            // newFlame.SetActive(false);
 
             // Delay setup for a frame so that instantiation has time to finish properly.
             StartCoroutine(DelayedSetupTrailingFlame(newFlame));
 
-            newFlame.SetActive(true);
+            // newFlame.SetActive(true);
             newFlame.name += "TRAIL";
-
-            StartCoroutine(RiseFromTable(newFlame, 0.5f, isBig));
 
             lastTrailPosition = transform.position;
         }
@@ -193,7 +191,7 @@ public class FlameMovementController : MonoBehaviour
         flameHeightController.baseGrowthSpeed = 0.05f;
     }
 
-    private IEnumerator RiseFromTable(GameObject flame, float duration, bool isBig)
+    private IEnumerator RiseFromTable(GameObject flame, FlameController flameController, float duration)
     {
         float elapsed = 0.0f;
 
@@ -216,16 +214,21 @@ public class FlameMovementController : MonoBehaviour
 
                 float opacity = Mathf.Lerp(initialOpacity, finalOpacity, tOpacity);
 
-                SetHexagonsOpacity(flame, opacity);
+                // SetHexagonsOpacity(flame, opacity);
+                flameController.SetHexagonsOpacity(opacity);
             }
             else
             {
-                SetHexagonsOpacity(flame, 0.0f);
+                // SetHexagonsOpacity(flame, 0.0f);
+                flameController.SetHexagonsOpacity(0.0f);
             }
 
             yield return null;
         }
 
+        
+        bool isBig = Random.value <= trailFlameGrowthChance;
+        Debug.Log(isBig);
         // Start growth process with certain probability.
         if (isBig)
         {
@@ -244,6 +247,8 @@ public class FlameMovementController : MonoBehaviour
         flameController.SetupFlame();
 
         SetupFlame(newFlame);
+
+        StartCoroutine(RiseFromTable(newFlame, flameController, 0.5f));
     }
 
     private IEnumerator DelayedSetupInitialFlame()
@@ -261,17 +266,6 @@ public class FlameMovementController : MonoBehaviour
         }
 
         PlaceFlameOnTable(rootHexagonStack);
-    }
-
-    private void SetHexagonsOpacity(GameObject rootHexagonStack, float opacity)
-    {
-        // Loop over the children of the root GameObject and set their opacity.
-        for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
-        {
-            Transform hexagon = rootHexagonStack.transform.GetChild(i);
-            MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
-            meshRenderer.material.SetFloat("_FlameOpacity", opacity);
-        }
     }
 
     public void OnColorChanged()
