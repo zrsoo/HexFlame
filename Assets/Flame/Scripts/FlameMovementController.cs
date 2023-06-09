@@ -112,7 +112,7 @@ public class FlameMovementController : MonoBehaviour
     private void KeepFlameOnSurface()
     {
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
-        if (Physics.Raycast(transform.position + movementDirection * (speed + 0.4f) * Time.deltaTime, -Vector3.up, out hitMove))
+        if (Physics.Raycast(transform.position + movementDirection * (speed + 0.5f) * Time.deltaTime, -Vector3.up, out hitMove))
         {
             // If it hits the table.
             if (hitMove.collider.gameObject.tag == "Table")

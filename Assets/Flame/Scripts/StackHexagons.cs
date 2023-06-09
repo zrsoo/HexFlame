@@ -7,8 +7,8 @@ public class StackHexagons : MonoBehaviour
     public float scale = 0.4f;
     public float distanceBetweenCenters = 0.01f;
 
-    public float sizeMax = 0.08f;  // max size of hexagon
-    public float sizeMin = 0.03f;  // min size of hexagon
+    public float sizeMax = 0.2f;  // max size of hexagon
+    public float sizeMin = 0.05f;  // min size of hexagon
 
     // TODO store MeshRenderers publicly here, get them in FlameMovementController
     // This way, you only call getComponent once, when the flame is being drawn.
@@ -26,9 +26,6 @@ public class StackHexagons : MonoBehaviour
 
         float hexagonStackHeight = 0;
 
-        float maxScale = 0.2f;
-        float minScale = 0.03f;
-
         for (int i = 0; i < count; i++)
         {
             GameObject hexagon = Instantiate(hexagonPrefab,
@@ -42,7 +39,7 @@ public class StackHexagons : MonoBehaviour
             float factor = Mathf.Sin(adjustedI * Mathf.PI);
 
             // Mix the min and max scales according to the factor
-            float size = Mathf.Lerp(minScale, maxScale, factor);
+            float size = Mathf.Lerp(sizeMin, sizeMax, factor);
 
             // Assign calculated size to the hexagon
             hexagonScript.width = size * scale;
