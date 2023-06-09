@@ -15,15 +15,14 @@ public class StackHexagons : MonoBehaviour
 
     private MeshRenderer[] meshRenderers;
 
-    private FlameMovementController flameMovementController;
+    private FlameController flameController;
 
     private void Start()
     {
-        flameMovementController = gameObject.GetComponent<FlameMovementController>();
-
         meshRenderers = new MeshRenderer[count];
-
         distanceBetweenCenters *= scale;
+
+        float hexagonStackHeight = 0;
 
         float maxScale = 0.2f;
         float minScale = 0.03f;
@@ -50,9 +49,13 @@ public class StackHexagons : MonoBehaviour
             hexagonScript.Draw();
 
             meshRenderers[i] = hexagon.GetComponent<MeshRenderer>();
+            hexagonStackHeight += hexagon.transform.localScale.y;
         }
 
+        flameController = gameObject.GetComponent<FlameController>();
 
-        flameMovementController.GetHexagonMeshRenderers(count, meshRenderers);
+        Debug.Log("STACK HEXAGONS: " + hexagonStackHeight);
+
+        flameController.GetHexagonMeshRenderers(meshRenderers);
     }
 }

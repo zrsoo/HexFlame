@@ -27,9 +27,12 @@ public class FlameMovementController : MonoBehaviour
     int numberOfFlames;
     private MeshRenderer[] meshRenderers;
 
+    private FlameController flameController;
+
     // Start is called before the first frame update
     void Start()
     {
+        flameController = gameObject.GetComponent<FlameController>();
         meshRenderers = new MeshRenderer[20000];
 
         // SET FRAMERATE
@@ -47,11 +50,11 @@ public class FlameMovementController : MonoBehaviour
         outerGreenChannel = 0.0f;
         outerBlueChannel = 0.0f;
 
-        PlaceFlameOnTable(gameObject);
         GenerateRandomMovementDirection();
 
         // Set initial flame's height
-        StartCoroutine(DelayedSetup(gameObject));
+        StartCoroutine(DelayedSetupInitialFlame());
+        PlaceFlameOnTable(gameObject);
         flames.Add(gameObject);
 
         numberOfFlames = 0;
@@ -150,12 +153,15 @@ public class FlameMovementController : MonoBehaviour
         {
             bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
+                        
+
             flames.Add(newFlame);
+
 
             newFlame.SetActive(false);
 
             // Delay setup for a frame so that instantiation has time to finish properly.
-            StartCoroutine(DelayedSetup(newFlame));
+            StartCoroutine(DelayedSetupTrailingFlame(newFlame));
 
             newFlame.SetActive(true);
             newFlame.name += "TRAIL";
@@ -231,10 +237,18 @@ public class FlameMovementController : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedSetup(GameObject newFlame)
+    private IEnumerator DelayedSetupTrailingFlame(GameObject newFlame)
     {
         yield return null;  // Wait for the next frame
+        FlameController flameController = newFlame.GetComponent<FlameController>();
+        flameController.SetupFlame();
         SetupFlame(newFlame);
+    }
+
+    private IEnumerator DelayedSetupInitialFlame()
+    {
+        yield return null;
+        flameController.SetupFlame();
     }
 
     private void SetupFlame(GameObject rootHexagonStack)
@@ -246,7 +260,8 @@ public class FlameMovementController : MonoBehaviour
         }
 
         PlaceFlameOnTable(rootHexagonStack);
-        SetHexagonsHeight(rootHexagonStack);
+
+        // SetHexagonsHeight(rootHexagonStack);
         SetHexagonsInnerColor(rootHexagonStack, innerRedChannel, innerGreenChannel, innerBlueChannel);
         SetHexagonsOuterColor(rootHexagonStack, outerRedChannel, outerGreenChannel, outerBlueChannel);
     }
@@ -265,6 +280,8 @@ public class FlameMovementController : MonoBehaviour
     private void SetHexagonsHeight(GameObject rootHexagonStack)
     {
         float flameHeight = GetFlameHeight(rootHexagonStack);
+
+        Debug.Log(flameHeight);
 
         for (int i = 0; i < rootHexagonStack.transform.childCount; i++)
         {
@@ -353,28 +370,6 @@ public class FlameMovementController : MonoBehaviour
         {
             SetHexagonsInnerColor(flame, innerRedChannel, innerGreenChannel, innerBlueChannel);
             SetHexagonsOuterColor(flame, outerRedChannel, outerGreenChannel, outerBlueChannel);
-        }
-    }
-
-    public void GetHexagonMeshRenderers(int numberOfHexagons, MeshRenderer[] meshRenderers)
-    {
-        numberOfFlames++;
-        int flameIndex = numberOfFlames;
-
-        int firstHexagonIndex = numberOfHexagons * (flameIndex - 1);
-        int lastHexagonIndex = firstHexagonIndex + numberOfHexagons - 1;
-
-        Debug.Log("FlameIndex: " + flameIndex);
-        Debug.Log("FirstHexagonIndex: " + firstHexagonIndex);
-        Debug.Log("LastHexagonIndex: " + lastHexagonIndex);
-
-        int hexagonIndex = 0;
-
-        for(int i = firstHexagonIndex; i <= lastHexagonIndex; ++i)
-        {
-            this.meshRenderers[i] = meshRenderers[hexagonIndex];
-            Debug.Log("HexagonMeshRenderer: " + this.meshRenderers[i].name);
-            hexagonIndex++;
         }
     }
 }
