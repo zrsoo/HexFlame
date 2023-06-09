@@ -55,11 +55,11 @@ public class FlameMovementController : MonoBehaviour
     void Update()
     {
         // Comment next 3 lines for stationary flame
-        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-        KeepFlameOnSurface();
+        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        // KeepFlameOnSurface();
         
         // if(flames.Count < 2)
-        LeaveTrail();
+        // LeaveTrail();
     }
 
     public static void PlaceFlameOnTable(GameObject flameStack)
@@ -265,6 +265,7 @@ public class FlameMovementController : MonoBehaviour
             Transform hexagonTransform = rootHexagonStack.transform.GetChild(i);
             MeshRenderer hexagonRenderer = hexagonTransform.GetComponent<MeshRenderer>();
 
+            hexagonRenderer.material.SetFloat("_HexagonYPosition", i);
             hexagonRenderer.material.SetFloat("_FlameHeight", flameHeight);
         }
     }
