@@ -89,4 +89,14 @@ public class FlameController : MonoBehaviour
     {
         return meshRenderers;
     }
+
+    private void SetRandomAmplitudeFactor()
+    {
+        float factor = Random.Range(0.7f, 1.3f);
+
+        for (int i = 0; i < numberOfHexagons; i++)
+        {
+            meshRenderers[i].material.SetFloat("_RandomAmplitudeFactor", factor);
+        }
+    }
 }

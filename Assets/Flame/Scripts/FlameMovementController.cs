@@ -33,6 +33,9 @@ public class FlameMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        QualitySettings.vSyncCount = 0; // Disable Sync
+        // Application.targetFrameRate = 50;
+
         gameObjectTransform = transform;
         flameController = gameObject.GetComponent<FlameController>();
 

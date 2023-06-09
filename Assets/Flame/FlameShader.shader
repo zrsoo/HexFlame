@@ -7,7 +7,7 @@ Shader "Unlit/FlameShader"
         _SampledNoise ("Noise", Range(0.0, 1.1)) = 0.0
         _HexagonYPosition ("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
         _FlameHeight ("FlameHeight", Range(0.0, 100.0)) = 0.0
-        _RandomPhaseOffset ("Random Phase Offset", Range(0.0, 100.0)) = 0.0
+        _RandomAmplitudeFactor ("Random Amplitude Factor", Range(0.7, 1.3)) = 1.0
 
         _RedChannel ("Red Channel", Range(0.0, 1.0)) = 1.0
         _GreenChannel ("Green Channel", Range(0.0, 1.0)) = 0.5
@@ -52,7 +52,6 @@ Shader "Unlit/FlameShader"
             float _SampledNoise;
             float _HexagonYPosition;
             float _FlameHeight;
-            float _RandomPhaseOffset;
 
             float _RedChannel;
             float _GreenChannel;
@@ -66,16 +65,12 @@ Shader "Unlit/FlameShader"
             {
                 v2f o;
 
-                // 0.08 - For tabletop flames
-                // 3.08 - For campfire flames
                 // Control the amplitude of the displacement
                 float displacementAmplitude = 0.05f; 
 
                 // Compute a displacement based on the sampled noise
                 float displacement = _SampledNoise * displacementAmplitude;
 
-                // -0.8 - For tabletop flames
-                // -0.3 - For campfire flames
                 // Modulate the displacement with y-coordinate
                 // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
                 float displacementFactor = smoothstep(0.0, 1.0, _HexagonYPosition / _FlameHeight);
