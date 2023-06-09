@@ -189,8 +189,8 @@ public class FlameMovementController : MonoBehaviour
         }
 
         // Once the flame reaches the growth threshold, add the FlameHeightController component so it starts varying in height.
-        trailFlame.AddComponent<FlameHeightController>();
-        SetBaseGrowthSpeed(trailFlame, 0.05f);
+        FlameHeightController flameHeightController = trailFlame.AddComponent<FlameHeightController>();
+        flameHeightController.baseGrowthSpeed = 0.05f;
     }
 
     private IEnumerator RiseFromTable(GameObject flame, float duration, bool isBig)
@@ -271,15 +271,6 @@ public class FlameMovementController : MonoBehaviour
             Transform hexagon = rootHexagonStack.transform.GetChild(i);
             MeshRenderer meshRenderer = hexagon.GetComponent<MeshRenderer>();
             meshRenderer.material.SetFloat("_FlameOpacity", opacity);
-        }
-    }
-
-    private static void SetBaseGrowthSpeed(GameObject rootHexagonStack, float speed)
-    {
-        if (rootHexagonStack.name.Contains("Clone"))
-        {
-            FlameHeightController flameHeightController = rootHexagonStack.GetComponent<FlameHeightController>();
-            flameHeightController.baseGrowthSpeed = speed;
         }
     }
 
