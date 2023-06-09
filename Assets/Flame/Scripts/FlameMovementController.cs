@@ -20,8 +20,6 @@ public class FlameMovementController : MonoBehaviour
     public float trailFlameGrowthChance = 0.7f;
     public float trailFlameGrowthThreshold = 1.0f;
 
-    public Texture2D[] noiseTextures;
-
     public float innerRedChannel, innerGreenChannel, innerBlueChannel;
     public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
@@ -30,6 +28,9 @@ public class FlameMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // SET FRAMERATE
+        Application.targetFrameRate = 500;
+
         flames = new List<GameObject>();
 
         speed = 0.01f;
@@ -45,8 +46,6 @@ public class FlameMovementController : MonoBehaviour
         PlaceFlameOnTable(gameObject);
         GenerateRandomMovementDirection();
 
-        // noiseTextures = Resources.LoadAll<Texture2D>("NoiseTextures");
-
         // Set initial flame's height
         StartCoroutine(DelayedSetup(gameObject));
         flames.Add(gameObject);
@@ -56,9 +55,11 @@ public class FlameMovementController : MonoBehaviour
     void Update()
     {
         // Comment next 3 lines for stationary flame
-        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-        // KeepFlameOnSurface();
-        // LeaveTrail();
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        KeepFlameOnSurface();
+        
+        // if(flames.Count < 2)
+        LeaveTrail();
     }
 
     public static void PlaceFlameOnTable(GameObject flameStack)
@@ -78,7 +79,6 @@ public class FlameMovementController : MonoBehaviour
                 else
                 {
                     // Position flame on table (slightly above).
-                    //flameStack.transform.position = hitPlace.point + new Vector3(0, GetDistanceFromTable(flameStack.transform.localScale.y), 0);
                     flameStack.transform.position = hitPlace.point + new Vector3(0, 0.005f + ComputeYPosition(flameStack.transform.localScale.y), 0);
                 }
             }
@@ -145,10 +145,6 @@ public class FlameMovementController : MonoBehaviour
             bool isBig = Random.value <= trailFlameGrowthChance;
             GameObject newFlame = Instantiate(flamePrefab, transform.position - new Vector3(0.0f, 0.0f, 0.01f), transform.rotation);
             flames.Add(newFlame);
-
-            StackHexagons stackHexagons = newFlame.GetComponent<StackHexagons>();
-            // stackHexagons.distanceBetweenCenters *= 0.15f;
-            // newFlame.transform.localScale *= 0.15f;
 
             newFlame.SetActive(false);
 
@@ -237,14 +233,10 @@ public class FlameMovementController : MonoBehaviour
 
     private void SetupFlame(GameObject rootHexagonStack)
     {
-        SetHexagonsRandomDelay(rootHexagonStack);
-
-        if (!rootHexagonStack.name.Contains("Clone"))
-            SetBaseGrowthSpeed(rootHexagonStack, 0.05f);
-        else
+        if (rootHexagonStack.name.Contains("Clone"))
         {
-            //SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-            //simplexNoise.seed = flames.Count * 10;
+            SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
+            simplexNoise.seed = flames.Count * 1000;
         }
 
         PlaceFlameOnTable(rootHexagonStack);

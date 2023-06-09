@@ -59,59 +59,19 @@ public class SimplexNoise : MonoBehaviour
         {
             // Calculate the distance from the middle
             int distanceFromMiddle = Mathf.Abs(i - middleIndex);
-
+            
             // If the distance is greater than the history length, use the oldest value in the history
             if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
             {
                 distanceFromMiddle = middleHexagonNoiseHistory.Count - 1;
             }
-
+            
             // Set the noise value of the hexagon
             SetNoiseOfHexagon(i, middleHexagonNoiseHistory[distanceFromMiddle]);
         }
-
-        //// Get the index of the middle hexagon
-        //int middleIndex = numberOfHexagons / 2;
-
-        //// Generate the noise value for the middle hexagon
-        //float middleNoiseValue = Generate(seed + middleIndex, Time.time * noiseSpeed);
-
-        //// Add this value to the history
-        //middleHexagonNoiseHistory.Insert(0, middleNoiseValue);
-
-        //// If the history is too long, remove the oldest value
-        //if (middleHexagonNoiseHistory.Count > maxHistoryLength)
-        //{
-        //    middleHexagonNoiseHistory.RemoveAt(middleHexagonNoiseHistory.Count - 1);
-        //}
-
-        //// Now, for each hexagon, use a value from the history based on the hexagon's distance from the middle
-        //for (int i = 0; i < numberOfHexagons; ++i)
-        //{
-        //    // Calculate the distance from the middle
-        //    int distanceFromMiddle = Mathf.Abs(i - middleIndex);
-
-        //    // If the distance is greater than the history length, use the oldest value in the history
-        //    if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
-        //    {
-        //        distanceFromMiddle = middleHexagonNoiseHistory.Count - 1;
-        //    }
-
-        //    float amplitude;
-        //    if (i <= middleIndex) // for the base to middle, the amplitude increases linearly
-        //    {
-        //        amplitude = (float)i / middleIndex;
-        //    }
-        //    else // for the middle to top, the amplitude remains 1
-        //    {
-        //        amplitude = 1f;
-        //    }
-
-        //    // Set the noise value of the hexagon
-        //    SetNoiseOfHexagon(i, middleHexagonNoiseHistory[distanceFromMiddle] * amplitude);
-        //}
     }
 
+    // TODO remove set of _HexagonYPosition from here, only set it once in FlameMovementController or somewhere
     void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
     {
         Transform hexagon = transform.GetChild(hexagonIndex);

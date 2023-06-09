@@ -1015,10 +1015,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   flamePrefab: {fileID: 5760552679650853169, guid: dc41d5469b36e1749a63307fc60f9680, type: 3}
-  trailSpawnPositionDifference: 0.005
+  trailSpawnPositionDifference: 0.01
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -1867,7 +1866,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -2396,7 +2394,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -3328,7 +3325,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -3982,7 +3978,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -4072,7 +4067,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -4265,7 +4259,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -5201,7 +5194,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -5291,7 +5283,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -5525,7 +5516,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
@@ -6570,7 +6560,6 @@ MonoBehaviour:
   trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
-  noiseTextures: []
   innerRedChannel: 0
   innerGreenChannel: 0
   innerBlueChannel: 0
