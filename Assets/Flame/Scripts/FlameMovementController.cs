@@ -243,6 +243,9 @@ public class FlameMovementController : MonoBehaviour
 
         FlameController flameController = newFlame.GetComponent<FlameController>();
 
+        flameController.GetColors(innerRedChannel, innerGreenChannel, innerBlueChannel,
+            outerRedChannel, outerGreenChannel, outerBlueChannel);
+
         flameControllers.Add(flameController);
         flameController.SetupFlame();
 

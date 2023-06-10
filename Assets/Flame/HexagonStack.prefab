@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexagonPrefab: {fileID: 5608007766839917533, guid: fb12330402971e34ca4dbecf94bf8ba8, type: 3}
-  count: 20
+  count: 25
   scale: 0.2
-  distanceBetweenCenters: 0.0045
+  distanceBetweenCenters: 0.0034
   sizeMax: 0.2
-  sizeMin: 0.07
+  sizeMin: 0.03
 --- !u!114 &2918446534615968331
 MonoBehaviour:
   m_ObjectHideFlags: 0

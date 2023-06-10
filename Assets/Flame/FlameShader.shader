@@ -74,12 +74,10 @@ Shader "Unlit/FlameShader"
                 // Modulate the displacement with y-coordinate
                 // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
                 float displacementFactor = smoothstep(0.0, 1.0, _HexagonYPosition / _FlameHeight);
-                float displacementFactorMirrored = 1.0 - smoothstep(0.0, 1.0, _HexagonYPosition / _FlameHeight);
 
                 // Apply the displacement factor to the displacement
                 displacement *= displacementFactor;
-                // displacement *= displacementFactorMirrored;
-
+                
                 // Adjust the vertex position based on the displacement
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
 
@@ -98,6 +96,10 @@ Shader "Unlit/FlameShader"
                 // Calculate the distance from the center of the texture
                 float dist = length(distUv);
 
+                if(dist > 0.80) {
+                    discard;
+                }
+
                 fixed4 innerColor = fixed4(_RedChannel, 
                     _GreenChannel, _BlueChannel, 1.0);
                 fixed4 outerColor = fixed4(_OuterRedChannel, _OuterGreenChannel,
@@ -105,13 +107,8 @@ Shader "Unlit/FlameShader"
 
                 fixed4 color;
 
-                // Changed from 0.0
                 float t = smoothstep(-0.2, 1.0, dist);
                 color = lerp(innerColor, outerColor, t);
-
-                if(dist > 0.80) {
-                    discard;
-                }
 
                 dist += 0.1;
                 color.a = lerp(1.0, -0.08, dist);

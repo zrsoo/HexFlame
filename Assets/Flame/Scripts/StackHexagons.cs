@@ -8,10 +8,7 @@ public class StackHexagons : MonoBehaviour
     public float distanceBetweenCenters = 0.01f;
 
     public float sizeMax = 0.2f;  // max size of hexagon
-    public float sizeMin = 0.05f;  // min size of hexagon
-
-    // TODO store MeshRenderers publicly here, get them in FlameMovementController
-    // This way, you only call getComponent once, when the flame is being drawn.
+    public float sizeMin = 0.02f;  // min size of hexagon
 
     private MeshRenderer[] meshRenderers;
 
@@ -52,8 +49,6 @@ public class StackHexagons : MonoBehaviour
         }
 
         flameController = gameObject.GetComponent<FlameController>();
-
-        // Debug.Log("STACK HEXAGONS: " + hexagonStackHeight);
 
         flameController.GetHexagonMeshRenderers(meshRenderers);
     }
