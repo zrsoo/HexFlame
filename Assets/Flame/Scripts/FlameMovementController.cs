@@ -66,7 +66,7 @@ public class FlameMovementController : MonoBehaviour
         // Comment next 3 lines for stationary flame
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
-        
+
         // if(flames.Count < 2)
         LeaveTrail();
     }
@@ -85,7 +85,7 @@ public class FlameMovementController : MonoBehaviour
                 if (flameStack.name.Contains("TRAIL") && !flameStack.name.Contains("BIG"))
                 {
                     // Position flame on table but not slightly above since flame is already small.
-                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.005f, 0);
+                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f, 0);
                 }
                 else
                 {
