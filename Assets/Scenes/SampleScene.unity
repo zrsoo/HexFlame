@@ -1016,7 +1016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   flamePrefab: {fileID: 5760552679650853169, guid: dc41d5469b36e1749a63307fc60f9680, type: 3}
-  trailSpawnPositionDifference: 0.01
+  trailSpawnPositionDifference: 0.005
   trailFlameGrowthChance: 0.7
   trailFlameGrowthThreshold: 1
   innerRedChannel: 0
@@ -1040,9 +1040,9 @@ MonoBehaviour:
   hexagonPrefab: {fileID: 5608007766839917533, guid: fb12330402971e34ca4dbecf94bf8ba8, type: 3}
   count: 20
   scale: 0.2
-  distanceBetweenCenters: 0.003
+  distanceBetweenCenters: 0.0045
   sizeMax: 0.2
-  sizeMin: 0.03
+  sizeMin: 0.07
 --- !u!4 &222030203
 Transform:
   m_ObjectHideFlags: 0

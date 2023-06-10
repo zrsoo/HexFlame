@@ -39,9 +39,6 @@ public class FlameMovementController : MonoBehaviour
         gameObjectTransform = transform;
         flameController = gameObject.GetComponent<FlameController>();
 
-        // SET FRAMERATE
-        Application.targetFrameRate = 500;
-
         flameControllers = new List<FlameController>();
 
         speed = 0.01f;
