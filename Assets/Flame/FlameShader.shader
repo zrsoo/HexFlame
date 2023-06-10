@@ -61,6 +61,8 @@ Shader "Unlit/FlameShader"
             float _OuterGreenChannel;
             float _OuterBlueChannel;
 
+            float _RandomAmplitudeFactor;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -69,7 +71,7 @@ Shader "Unlit/FlameShader"
                 float displacementAmplitude = 0.05f; 
 
                 // Compute a displacement based on the sampled noise
-                float displacement = _SampledNoise * displacementAmplitude;
+                float displacement = _SampledNoise * displacementAmplitude * _RandomAmplitudeFactor;
 
                 // Modulate the displacement with y-coordinate
                 // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
