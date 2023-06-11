@@ -175,9 +175,4 @@ public class SimplexNoise : MonoBehaviour
 
         return 70.0f * (n0 + n1 + n2);
     }
-
-    public void setMeshRenderers(MeshRenderer[] meshRenderers)
-    {
-        hexagonsMeshRenderers = meshRenderers;
-    }
 }

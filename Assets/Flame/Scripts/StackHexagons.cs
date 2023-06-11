@@ -50,6 +50,6 @@ public class StackHexagons : MonoBehaviour
 
         flameController = gameObject.GetComponent<FlameController>();
 
-        flameController.GetHexagonMeshRenderers(meshRenderers);
+        flameController.SetHexagonMeshRenderers(meshRenderers);
     }
 }

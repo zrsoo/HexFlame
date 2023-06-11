@@ -249,7 +249,7 @@ public class FlameMovementController : MonoBehaviour
         flameControllers.Add(flameController);
         flameController.SetupFlame();
 
-        AddSimplexNoiseAndPlaceOnTable(newFlame, flameController.getMeshRenderers());
+        AddSimplexNoiseAndPlaceOnTable(newFlame);
 
         StartCoroutine(RiseFromTable(newFlame, flameController, 0.5f));
     }
@@ -260,12 +260,11 @@ public class FlameMovementController : MonoBehaviour
         flameController.SetupFlame();
     }
 
-    private void AddSimplexNoiseAndPlaceOnTable(GameObject rootHexagonStack, MeshRenderer[] meshRenderers)
+    private void AddSimplexNoiseAndPlaceOnTable(GameObject rootHexagonStack)
     {
         if (rootHexagonStack.name.Contains("Clone"))
         {
             SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-            // simplexNoise.setMeshRenderers(meshRenderers);
             simplexNoise.seed = flameControllers.Count * 1000;
         }
 
