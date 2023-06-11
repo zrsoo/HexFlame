@@ -10,11 +10,15 @@ public class FlameHeightController : MonoBehaviour
     private float randomGrowthFactor;
     private float transitionDuration = 10f; // duration over which random values will change
 
+    private Transform localTransform;
+
     // Start is called before the first frame update
     void Start()
     {
         randomGrowthFactor = Random.Range(0.8f, 1.7f);
         maxFlameHeight = Random.Range(0.4f, 1.4f);
+
+        localTransform = transform;
 
         StartCoroutine(ChangeGrowthFactorOverTime());
         StartCoroutine(ChangeMaxHeightOverTime());
@@ -62,15 +66,14 @@ public class FlameHeightController : MonoBehaviour
     private void UpdateFlameHeight()
     {
         float prevHeight = transform.localScale.y;
-        // CHECK
         float prevWitdh = transform.localScale.x;
 
         // Determine the current direction of growth.
-        if (transform.localScale.y >= maxFlameHeight)
+        if (localTransform.localScale.y >= maxFlameHeight)
         {
             isGrowing = false;
         }
-        else if (transform.localScale.y <= minFlameHeight)
+        else if (localTransform.localScale.y <= minFlameHeight)
         {
             isGrowing = true;
         }
@@ -84,7 +87,7 @@ public class FlameHeightController : MonoBehaviour
         currentHeight = Mathf.Clamp(currentHeight, minFlameHeight, maxFlameHeight);
         currentWidth = Mathf.Clamp(currentWidth, minFlameHeight, maxFlameHeight);
 
-        transform.localScale = new Vector3(currentWidth, currentHeight, transform.localScale.z);
+        localTransform.localScale = new Vector3(currentWidth, currentHeight, localTransform.localScale.z);
         FlameMovementController.PlaceFlameOnTable(gameObject);
     }
 }
