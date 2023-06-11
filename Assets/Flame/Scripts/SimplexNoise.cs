@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Profiling;
+using UnityEngine.UIElements;
 
 public class SimplexNoise : MonoBehaviour
 {
@@ -37,9 +38,13 @@ public class SimplexNoise : MonoBehaviour
 
     private float elapsedTime;
 
+    private float noiseScale;
+
     // Start is called before the first frame update
     void Start()
     {
+        noiseScale = computeNoiseScale();
+
         noiseSpeed = UnityEngine.Random.Range(0.5f, 1.5f);
         
         numberOfHexagons = transform.childCount;
@@ -62,7 +67,7 @@ public class SimplexNoise : MonoBehaviour
         elapsedTime += Time.deltaTime;
 
         // Generate the noise value for the middle hexagon
-        float middleNoiseValue = Generate(seed + middleIndex, elapsedTime * noiseSpeed);
+        float middleNoiseValue = Generate(seed + middleIndex, elapsedTime * noiseSpeed) * noiseScale;
 
         // Add this value to the history
         middleHexagonNoiseHistory.Insert(0, middleNoiseValue);
@@ -174,5 +179,20 @@ public class SimplexNoise : MonoBehaviour
         }
 
         return 70.0f * (n0 + n1 + n2);
+    }
+
+    private float computeNoiseScale()
+    {
+        float scale = gameObject.GetComponent<StackHexagons>().scale;
+
+        float scale1 = 0.02f, yPos1 = 1.0f;
+        float scale2 = 5.0f, yPos2 = 29.0f;
+
+        float m = (yPos2 - yPos1) / (scale2 - scale1);
+        float b = yPos1 - m * scale1;
+
+        float yPos = m * scale + b;
+
+        return yPos;     
     }
 }

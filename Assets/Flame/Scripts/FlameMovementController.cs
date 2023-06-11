@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.Port;
 
 public class FlameMovementController : MonoBehaviour
 {
@@ -174,8 +172,6 @@ public class FlameMovementController : MonoBehaviour
 
         while (trailFlameTransform.localScale.y <= trailFlameGrowthThreshold)
         {
-            float prevHeight = trailFlameTransform.localScale.y;
-
             if (trailFlameTransform.localScale.x < 1)
                 trailFlameTransform.localScale += new Vector3(growthSpeed, growthSpeed, 0);
             else

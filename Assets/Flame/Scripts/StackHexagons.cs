@@ -3,12 +3,12 @@ using UnityEngine;
 public class StackHexagons : MonoBehaviour
 {
     public GameObject hexagonPrefab;
-    public int count = 11;
-    public float scale = 0.4f;
-    public float distanceBetweenCenters = 0.01f;
+    public int count = 25;
+    public float scale = 0.2f;
+    public float distanceBetweenCenters = 0.0034f;
 
     public float sizeMax = 0.2f;  // max size of hexagon
-    public float sizeMin = 0.02f;  // min size of hexagon
+    public float sizeMin = 0.03f;  // min size of hexagon
 
     private MeshRenderer[] meshRenderers;
 
