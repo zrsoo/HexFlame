@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlameMovementController : MonoBehaviour
@@ -19,9 +18,6 @@ public class FlameMovementController : MonoBehaviour
     public float trailFlameGrowthChance = 0.7f;
     public float trailFlameGrowthThreshold = 1.0f;
 
-    public float innerRedChannel, innerGreenChannel, innerBlueChannel;
-    public float outerRedChannel, outerGreenChannel, outerBlueChannel;
-
     private FlameController flameController;
 
     Transform gameObjectTransform;
@@ -30,20 +26,11 @@ public class FlameMovementController : MonoBehaviour
     void Start()
     {
         QualitySettings.vSyncCount = 0; // Disable Sync
-        // Application.targetFrameRate = 50;
 
         gameObjectTransform = transform;
         flameController = gameObject.GetComponent<FlameController>();
 
         speed = 0.01f;
-
-        innerRedChannel = 255.0f;
-        innerGreenChannel = 127.5f;
-        innerBlueChannel = 0.0f;
-
-        outerRedChannel = 255.0f;
-        outerGreenChannel = 0.0f;
-        outerBlueChannel = 0.0f;
 
         GenerateRandomMovementDirection();
 
