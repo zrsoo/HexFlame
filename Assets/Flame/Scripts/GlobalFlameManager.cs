@@ -37,6 +37,8 @@ public class GlobalFlameManager : MonoBehaviour
 
         flameController.SetHexagonsInnerColor(innerRed, innerGreen, innerBlue);
         flameController.SetHexagonsOuterColor(outerRed, outerGreen, outerBlue);
+
+        flameController.setNoiseSeed(flameControllers.Count * 1000);
     }
 
     public void UnregisterFlameController(FlameController flameController)

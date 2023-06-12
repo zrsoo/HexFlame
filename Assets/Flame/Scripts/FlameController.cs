@@ -124,4 +124,10 @@ public class FlameController : MonoBehaviour
         this.outerGreen = outerGreen;
         this.outerBlue = outerBlue;
     }
+
+    public void setNoiseSeed(float seed)
+    {
+        SimplexNoise simplexNoise = gameObject.AddComponent<SimplexNoise>();
+        simplexNoise.seed = seed;
+    }
 }

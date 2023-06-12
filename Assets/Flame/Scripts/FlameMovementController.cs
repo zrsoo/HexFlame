@@ -22,8 +22,6 @@ public class FlameMovementController : MonoBehaviour
     public float innerRedChannel, innerGreenChannel, innerBlueChannel;
     public float outerRedChannel, outerGreenChannel, outerBlueChannel;
 
-    private List<FlameController> flameControllers;
-
     private FlameController flameController;
 
     Transform gameObjectTransform;
@@ -36,8 +34,6 @@ public class FlameMovementController : MonoBehaviour
 
         gameObjectTransform = transform;
         flameController = gameObject.GetComponent<FlameController>();
-
-        flameControllers = new List<FlameController>();
 
         speed = 0.01f;
 
@@ -54,8 +50,6 @@ public class FlameMovementController : MonoBehaviour
         // Set initial flame's height
         StartCoroutine(DelayedSetupInitialFlame());
         PlaceFlameOnTable(gameObject);
-
-        flameControllers.Add(flameController);
     }
 
     // Update is called once per frame
@@ -240,7 +234,6 @@ public class FlameMovementController : MonoBehaviour
         flameController.GetColors(innerRedChannel, innerGreenChannel, innerBlueChannel,
             outerRedChannel, outerGreenChannel, outerBlueChannel);
 
-        flameControllers.Add(flameController);
         flameController.SetupFlame();
 
         AddSimplexNoiseAndPlaceOnTable(newFlame);
@@ -256,11 +249,11 @@ public class FlameMovementController : MonoBehaviour
 
     private void AddSimplexNoiseAndPlaceOnTable(GameObject rootHexagonStack)
     {
-        if (rootHexagonStack.name.Contains("Clone"))
-        {
-            SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-            simplexNoise.seed = flameControllers.Count * 1000;
-        }
+        //if (rootHexagonStack.name.Contains("Clone"))
+        //{
+        //    SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
+        //    simplexNoise.seed = flameControllers.Count * 1000;
+        //}
 
         PlaceFlameOnTable(rootHexagonStack);
     }
