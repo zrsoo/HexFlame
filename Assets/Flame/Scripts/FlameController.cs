@@ -13,13 +13,15 @@ public class FlameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        innerRed = 255.0f;
-        innerGreen = 127.5f;
-        innerBlue = 0.0f;
+        GlobalFlameManager.instance.RegisterFlameController(this);
 
-        outerRed = 255.0f;
-        outerGreen = 0.0f;
-        outerBlue = 0.0f;
+        //innerRed = 255.0f;
+        //innerGreen = 127.5f;
+        //innerBlue = 0.0f;
+
+        //outerRed = 255.0f;
+        //outerGreen = 0.0f;
+        //outerBlue = 0.0f;
     }
 
     // Update is called once per frame
@@ -43,8 +45,8 @@ public class FlameController : MonoBehaviour
     {
         SetHexagonsHeight();
         SetRandomAmplitudeFactor();
-        SetHexagonsInnerColor(innerRed, innerGreen, innerBlue);
-        SetHexagonsOuterColor(outerRed, outerGreen, outerBlue);
+        // SetHexagonsInnerColor(innerRed, innerGreen, innerBlue);
+        // SetHexagonsOuterColor(outerRed, outerGreen, outerBlue);
     }
 
     private void SetHexagonsHeight()

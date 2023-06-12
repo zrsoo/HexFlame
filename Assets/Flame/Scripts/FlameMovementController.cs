@@ -264,13 +264,4 @@ public class FlameMovementController : MonoBehaviour
 
         PlaceFlameOnTable(rootHexagonStack);
     }
-
-    public void OnColorChanged()
-    {
-        foreach(FlameController flameController in flameControllers)
-        {
-            flameController.SetHexagonsInnerColor(innerRedChannel, innerGreenChannel, innerBlueChannel);
-            flameController.SetHexagonsOuterColor(outerRedChannel, outerGreenChannel, outerBlueChannel);
-        }
-    }
 }
