@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AdancedBillboard : MonoBehaviour
+public class AdvancedBillboard : MonoBehaviour
 {
     private Camera mainCamera;
     private Vector3 initialPosition;
@@ -15,7 +15,7 @@ public class AdancedBillboard : MonoBehaviour
     private void Update()
     {
         Vector3 directionToCamera = mainCamera.transform.position - initialPosition;
-        directionToCamera.y = 0;  // This line keeps the flame's normal parallel to the ground.
+        directionToCamera.y = 0f;
 
         // Normalize the direction to get a unit vector, and scale by the offset radius.
         Vector3 offsetDirection = directionToCamera.normalized * offsetRadius;
@@ -25,7 +25,7 @@ public class AdancedBillboard : MonoBehaviour
 
         if (directionToCamera != Vector3.zero) // To avoid errors when the object is exactly at the camera position
         {
-            transform.rotation = Quaternion.LookRotation(-directionToCamera);
+            transform.rotation = Quaternion.LookRotation(-directionToCamera, Vector3.up);
         }
     }
 }
