@@ -62,11 +62,9 @@ public class FlameMovementController : MonoBehaviour
     void Update()
     {
         // Comment next 3 lines for stationary flame
-        // transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-        // KeepFlameOnSurface();
-
-        // if(flames.Count < 2)
-        // LeaveTrail();
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+        KeepFlameOnSurface();
+        LeaveTrail();
     }
 
     public static void PlaceFlameOnTable(GameObject flameStack)
