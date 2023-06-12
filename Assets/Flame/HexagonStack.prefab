@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5760552679650853177}
   - component: {fileID: 5760552679650853176}
   - component: {fileID: 2918446534615968331}
+  - component: {fileID: 2036382164689061719}
   m_Layer: 0
   m_Name: HexagonStack
   m_TagString: Untagged
@@ -61,5 +62,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcaf0bedbd2e06b42b98ce272f3111cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2036382164689061719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760552679650853169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

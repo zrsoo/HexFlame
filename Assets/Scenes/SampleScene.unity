@@ -1268,6 +1268,7 @@ GameObject:
   - component: {fileID: 222030202}
   - component: {fileID: 222030198}
   - component: {fileID: 222030205}
+  - component: {fileID: 222030206}
   m_Layer: 0
   m_Name: HexagonStack
   m_TagString: Untagged
@@ -1282,7 +1283,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 222030195}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abb8cfaa42766bc4bb71e00955943d42, type: 3}
   m_Name: 
@@ -1333,6 +1334,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcaf0bedbd2e06b42b98ce272f3111cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &222030206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222030195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &236796808
@@ -3256,6 +3269,7 @@ GameObject:
   - component: {fileID: 785713865}
   - component: {fileID: 785713863}
   - component: {fileID: 785713862}
+  - component: {fileID: 785713866}
   m_Layer: 0
   m_Name: FlamePrefab (9)
   m_TagString: Untagged
@@ -3322,6 +3336,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &785713866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785713860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &792434004 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf64534f769598e449a0017e7bd38d1c, type: 3}
@@ -3595,6 +3621,7 @@ GameObject:
   - component: {fileID: 889387536}
   - component: {fileID: 889387534}
   - component: {fileID: 889387533}
+  - component: {fileID: 889387537}
   m_Layer: 0
   m_Name: FlamePrefab (7)
   m_TagString: Untagged
@@ -3661,6 +3688,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &889387537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889387531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &912332967
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,6 +4118,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4152,6 +4192,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa62f11fc8d49e4487300e4d0dbeefb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panSpeed: 2
+  rotateSpeed: 500
+  zoomSpeed: 1000
 --- !u!1 &974895070
 GameObject:
   m_ObjectHideFlags: 0
@@ -4883,6 +4938,7 @@ GameObject:
   - component: {fileID: 1106715949}
   - component: {fileID: 1106715947}
   - component: {fileID: 1106715946}
+  - component: {fileID: 1106715950}
   m_Layer: 0
   m_Name: FlamePrefab (6)
   m_TagString: Untagged
@@ -4949,6 +5005,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &1106715950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106715944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1159744300
 GameObject:
   m_ObjectHideFlags: 0
@@ -5458,6 +5526,7 @@ GameObject:
   - component: {fileID: 1203543158}
   - component: {fileID: 1203543156}
   - component: {fileID: 1203543155}
+  - component: {fileID: 1203543159}
   m_Layer: 0
   m_Name: FlamePrefab (4)
   m_TagString: Untagged
@@ -5524,6 +5593,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &1203543159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203543153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1206479525
 GameObject:
   m_ObjectHideFlags: 0
@@ -5789,6 +5870,7 @@ GameObject:
   - component: {fileID: 1252956216}
   - component: {fileID: 1252956214}
   - component: {fileID: 1252956213}
+  - component: {fileID: 1252956217}
   m_Layer: 0
   m_Name: FlamePrefab (2)
   m_TagString: Untagged
@@ -5855,6 +5937,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &1252956217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252956211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1266577671
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,6 +8427,7 @@ GameObject:
   - component: {fileID: 2005523142}
   - component: {fileID: 2005523140}
   - component: {fileID: 2005523139}
+  - component: {fileID: 2005523143}
   m_Layer: 0
   m_Name: FlamePrefab (1)
   m_TagString: Untagged
@@ -8399,6 +8494,18 @@ MonoBehaviour:
   distanceBetweenCenters: 0.0034
   sizeMax: 0.2
   sizeMin: 0.03
+--- !u!114 &2005523143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005523137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8505ad327a16f047be141844d6c0492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2030938526
 GameObject:
   m_ObjectHideFlags: 0

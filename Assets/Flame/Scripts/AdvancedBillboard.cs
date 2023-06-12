@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AdvancedBillboard : MonoBehaviour
+public class AdancedBillboard : MonoBehaviour
 {
     private Camera mainCamera;
     private Vector3 initialPosition;
