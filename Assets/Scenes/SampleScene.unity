@@ -7308,7 +7308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1741375850
 Transform:
   m_ObjectHideFlags: 0
@@ -8811,6 +8811,7 @@ GameObject:
   - component: {fileID: 814479516910372074}
   - component: {fileID: 814479516910372076}
   - component: {fileID: 814479516910372077}
+  - component: {fileID: 814479516910372078}
   m_Layer: 0
   m_Name: FlamePrefab 6
   m_TagString: Untagged
@@ -8877,6 +8878,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcaf0bedbd2e06b42b98ce272f3111cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &814479516910372078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814479516910372067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183d7323830d61e4da209f1ef2a71940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetRadius: 0.3
 --- !u!1 &1387792695766672480
 GameObject:
   m_ObjectHideFlags: 0
@@ -8981,6 +8995,7 @@ GameObject:
   - component: {fileID: 2060077649911461529}
   - component: {fileID: 2060077649911461535}
   - component: {fileID: 2060077649911461534}
+  - component: {fileID: 2060077649911461536}
   m_Layer: 0
   m_Name: FlamePrefab 5
   m_TagString: Untagged
@@ -9047,6 +9062,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseSpeed: 1
   seed: 0
+--- !u!114 &2060077649911461536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060077649911461520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183d7323830d61e4da209f1ef2a71940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetRadius: 0.3
 --- !u!33 &2179406363067583486
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9262,6 +9290,7 @@ GameObject:
   - component: {fileID: 4314961870746411675}
   - component: {fileID: 4314961870746411677}
   - component: {fileID: 4314961870746411676}
+  - component: {fileID: 4314961870746411678}
   m_Layer: 0
   m_Name: FlamePrefab 4
   m_TagString: Untagged
@@ -9328,6 +9357,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseSpeed: 1
   seed: 0
+--- !u!114 &4314961870746411678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4314961870746411666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183d7323830d61e4da209f1ef2a71940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetRadius: 0.3
 --- !u!23 &4325733142279992974
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9741,6 +9783,7 @@ GameObject:
   - component: {fileID: 7580917577618536896}
   - component: {fileID: 7580917577618536902}
   - component: {fileID: 7580917577618536903}
+  - component: {fileID: 7580917577618536906}
   m_Layer: 0
   m_Name: FlamePrefab 2
   m_TagString: Untagged
@@ -9748,6 +9791,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7580917577618536906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7580917577618536905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183d7323830d61e4da209f1ef2a71940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetRadius: 0.3
 --- !u!114 &7580917578615178162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9852,6 +9908,7 @@ GameObject:
   - component: {fileID: 7580917578956544105}
   - component: {fileID: 7580917578956544111}
   - component: {fileID: 7580917578956544110}
+  - component: {fileID: 7580917578956544112}
   m_Layer: 0
   m_Name: FlamePrefab
   m_TagString: Untagged
@@ -9918,6 +9975,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseSpeed: 1
   seed: 0
+--- !u!114 &7580917578956544112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7580917578956544096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183d7323830d61e4da209f1ef2a71940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetRadius: 0.3
 --- !u!33 &8265994914164369166
 MeshFilter:
   m_ObjectHideFlags: 0
