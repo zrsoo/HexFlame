@@ -7,21 +7,10 @@ public class FlameController : MonoBehaviour
     private MeshRenderer[] meshRenderers;
     int numberOfHexagons;
 
-    private float innerRed, innerGreen, innerBlue;
-    private float outerRed, outerGreen, outerBlue;
-
     // Start is called before the first frame update
     void Start()
     {
         GlobalFlameManager.instance.RegisterFlameController(this);
-
-        //innerRed = 255.0f;
-        //innerGreen = 127.5f;
-        //innerBlue = 0.0f;
-
-        //outerRed = 255.0f;
-        //outerGreen = 0.0f;
-        //outerBlue = 0.0f;
     }
 
     // Update is called once per frame
@@ -45,8 +34,6 @@ public class FlameController : MonoBehaviour
     {
         SetHexagonsHeight();
         SetRandomAmplitudeFactor();
-        // SetHexagonsInnerColor(innerRed, innerGreen, innerBlue);
-        // SetHexagonsOuterColor(outerRed, outerGreen, outerBlue);
     }
 
     private void SetHexagonsHeight()
@@ -60,10 +47,6 @@ public class FlameController : MonoBehaviour
 
     public void SetHexagonsInnerColor(float red, float green, float blue)
     {
-        innerRed = red;
-        innerGreen = green;
-        innerBlue = blue;
-
         red /= 255.0f;
         green /= 255.0f;
         blue /= 255.0f;
@@ -78,10 +61,6 @@ public class FlameController : MonoBehaviour
 
     public void SetHexagonsOuterColor(float red, float green, float blue)
     {
-        outerRed = red;
-        outerGreen = green;
-        outerBlue = blue;
-
         red /= 255.0f;
         green /= 255.0f;
         blue /= 255.0f;
@@ -111,18 +90,6 @@ public class FlameController : MonoBehaviour
         {
             meshRenderers[i].material.SetFloat("_RandomAmplitudeFactor", factor);
         }
-    }
-
-    public void GetColors(float innerRed, float innerGreen, float innerBlue,
-        float outerRed, float outerGreen, float outerBlue)
-    {
-        this.innerRed = innerRed;
-        this.innerGreen = innerGreen;
-        this.innerBlue = innerBlue;
-
-        this.outerRed = outerRed;
-        this.outerGreen = outerGreen;
-        this.outerBlue = outerBlue;
     }
 
     public void setNoiseSeed(float seed)

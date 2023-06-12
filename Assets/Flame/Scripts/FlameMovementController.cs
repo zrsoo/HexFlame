@@ -231,12 +231,9 @@ public class FlameMovementController : MonoBehaviour
 
         FlameController flameController = newFlame.GetComponent<FlameController>();
 
-        flameController.GetColors(innerRedChannel, innerGreenChannel, innerBlueChannel,
-            outerRedChannel, outerGreenChannel, outerBlueChannel);
-
         flameController.SetupFlame();
 
-        AddSimplexNoiseAndPlaceOnTable(newFlame);
+        PlaceFlameOnTable(newFlame);
 
         StartCoroutine(RiseFromTable(newFlame, flameController, 0.5f));
     }
@@ -245,16 +242,5 @@ public class FlameMovementController : MonoBehaviour
     {
         yield return null;
         flameController.SetupFlame();
-    }
-
-    private void AddSimplexNoiseAndPlaceOnTable(GameObject rootHexagonStack)
-    {
-        //if (rootHexagonStack.name.Contains("Clone"))
-        //{
-        //    SimplexNoise simplexNoise = rootHexagonStack.AddComponent<SimplexNoise>();
-        //    simplexNoise.seed = flameControllers.Count * 1000;
-        //}
-
-        PlaceFlameOnTable(rootHexagonStack);
     }
 }
