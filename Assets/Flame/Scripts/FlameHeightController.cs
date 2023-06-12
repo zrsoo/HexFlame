@@ -5,7 +5,7 @@ public class FlameHeightController : MonoBehaviour
 {
     public float baseGrowthSpeed = 0.05f;
     private bool isGrowing = true;
-    private float minFlameHeight = 0.4f; 
+    private float minFlameHeight; 
     private float maxFlameHeight;
     private float randomGrowthFactor;
     private float transitionDuration = 10f; // duration over which random values will change
@@ -18,6 +18,8 @@ public class FlameHeightController : MonoBehaviour
     void Start()
     {
         flameController = GetComponent<FlameController>();
+
+        minFlameHeight = flameController.GetTrailFlameGrowthThreshold();
 
         randomGrowthFactor = Random.Range(0.8f, 1.7f);
         maxFlameHeight = Random.Range(0.4f, 1.4f);

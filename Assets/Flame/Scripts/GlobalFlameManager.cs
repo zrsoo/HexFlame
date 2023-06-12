@@ -47,6 +47,7 @@ public class GlobalFlameManager : MonoBehaviour
         flameController.SetNoiseSeed(flameControllers.Count * 1000);
 
         flameController.SetTrailFlameGrowthChance(trailFlameGrowthChance);
+        flameController.SetTrailFlameGrowthThreshold(trailFlameGrowthThreshold);
     }
 
     public void UnregisterFlameController(FlameController flameController)

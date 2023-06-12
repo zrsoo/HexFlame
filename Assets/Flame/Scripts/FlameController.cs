@@ -7,7 +7,7 @@ public class FlameController : MonoBehaviour
     int numberOfHexagons;
 
     private float trailFlameGrowthChance;
-    private float trailFlameGrowthThreshold = 1.0f;
+    private float trailFlameGrowthThreshold;
 
     // Start is called before the first frame update
     void Start()
@@ -110,6 +110,16 @@ public class FlameController : MonoBehaviour
     public void SetTrailFlameGrowthChance(float chance)
     {
         trailFlameGrowthChance = chance;
+    }
+
+    public void SetTrailFlameGrowthThreshold(float threshold)
+    {
+        trailFlameGrowthThreshold = threshold;
+    }
+
+    public float GetTrailFlameGrowthThreshold()
+    {
+        return trailFlameGrowthThreshold;
     }
 
     public void PlaceFlameOnTable()

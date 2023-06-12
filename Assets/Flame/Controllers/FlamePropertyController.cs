@@ -11,6 +11,7 @@ public class FlamePropertyController : MonoBehaviour
     public TextMeshProUGUI greenGauge;
     public TextMeshProUGUI blueGauge;
     public TextMeshProUGUI growthChanceGauge;
+    public TextMeshProUGUI thresholdGauge;
 
     public Slider redSlider;
     public Slider greenSlider;
@@ -50,6 +51,14 @@ public class FlamePropertyController : MonoBehaviour
 
         float chanceText = chance * 100.0f;
         growthChanceGauge.text = chanceText.ToString("0") + " %";
+    }
+
+    public void SetThreshold(float threshold)
+    {
+        GlobalFlameManager.instance.trailFlameGrowthThreshold = threshold;
+
+        float thresholdText = threshold * 100.0f;
+        thresholdGauge.text = thresholdText.ToString("0") + " %";
     }
 
     private void ChangeFlameElement()
