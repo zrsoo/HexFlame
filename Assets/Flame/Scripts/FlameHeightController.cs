@@ -12,9 +12,13 @@ public class FlameHeightController : MonoBehaviour
 
     private Transform localTransform;
 
+    private FlameController flameController;
+
     // Start is called before the first frame update
     void Start()
     {
+        flameController = GetComponent<FlameController>();
+
         randomGrowthFactor = Random.Range(0.8f, 1.7f);
         maxFlameHeight = Random.Range(0.4f, 1.4f);
 
@@ -88,6 +92,6 @@ public class FlameHeightController : MonoBehaviour
         currentWidth = Mathf.Clamp(currentWidth, minFlameHeight, maxFlameHeight);
 
         localTransform.localScale = new Vector3(currentWidth, currentHeight, localTransform.localScale.z);
-        FlameMovementController.PlaceFlameOnTable(gameObject);
+        flameController.PlaceFlameOnTable();
     }
 }

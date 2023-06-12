@@ -46,7 +46,7 @@ public class FlamePropertyController : MonoBehaviour
 
     public void SetGrowthChance(float chance)
     {
-        flameMovementController.trailFlameGrowthChance = chance;
+        GlobalFlameManager.instance.trailFlameGrowthChance = chance;
 
         float chanceText = chance * 100.0f;
         growthChanceGauge.text = chanceText.ToString("0") + " %";

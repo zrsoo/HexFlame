@@ -10,6 +10,9 @@ public class GlobalFlameManager : MonoBehaviour
     private float innerRed, innerGreen, innerBlue,
         outerRed, outerGreen, outerBlue;
 
+    public float trailFlameGrowthChance;
+    public float trailFlameGrowthThreshold;
+
     void Awake()
     {
         if (instance != null)
@@ -26,6 +29,9 @@ public class GlobalFlameManager : MonoBehaviour
             outerGreen = 0.0f;
             outerBlue = 0.0f;
 
+            trailFlameGrowthChance = 0.7f;
+            trailFlameGrowthThreshold = 1.0f;
+
             instance = this;
             flameControllers = new List<FlameController>();
         }
@@ -38,7 +44,9 @@ public class GlobalFlameManager : MonoBehaviour
         flameController.SetHexagonsInnerColor(innerRed, innerGreen, innerBlue);
         flameController.SetHexagonsOuterColor(outerRed, outerGreen, outerBlue);
 
-        flameController.setNoiseSeed(flameControllers.Count * 1000);
+        flameController.SetNoiseSeed(flameControllers.Count * 1000);
+
+        flameController.SetTrailFlameGrowthChance(trailFlameGrowthChance);
     }
 
     public void UnregisterFlameController(FlameController flameController)
