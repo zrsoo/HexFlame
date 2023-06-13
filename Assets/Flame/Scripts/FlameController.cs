@@ -9,6 +9,7 @@ public class FlameController : MonoBehaviour
     private float trailFlameGrowthChance;
     private float trailFlameGrowthThreshold;
 
+    private FlameMovementController flameMovementController;
     private GameObject surface;
 
     // Start is called before the first frame update
@@ -16,14 +17,22 @@ public class FlameController : MonoBehaviour
     {
         GlobalFlameManager.instance.RegisterFlameController(this);
 
-        if (!gameObject.name.Contains("Clone"))
+        flameMovementController = gameObject.GetComponent<FlameMovementController>();
+
+        if (flameMovementController != null)
         {
-            surface = gameObject.GetComponent<FlameMovementController>().surface;
+            surface = flameMovementController.surface;
             PlaceFlameOnSurface();
             StartCoroutine(DelayedSetupInitialFlame());
         }
-        else
+        else if (gameObject.name.Contains("Clone"))
+        {
             StartCoroutine(DelayedSetupTrailingFlame());
+        }
+        else
+        {
+            StartCoroutine(DelayedSetupInitialFlame());
+        }
     }
 
     // Update is called once per frame
@@ -148,7 +157,6 @@ public class FlameController : MonoBehaviour
                     flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f + ComputeYPosition(flameStackTransform.localScale.y), 0);
                 }
             }
-            Debug.DrawLine(flameStackTransform.position, hitPlace.point, Color.red, 5.0f);
         }
     }
 
