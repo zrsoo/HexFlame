@@ -9,15 +9,19 @@ public class FlameController : MonoBehaviour
     private float trailFlameGrowthChance;
     private float trailFlameGrowthThreshold;
 
+    private GameObject surface;
+
     // Start is called before the first frame update
     void Start()
     {
         GlobalFlameManager.instance.RegisterFlameController(this);
 
-        PlaceFlameOnTable();
-
-        if(!gameObject.name.Contains("Clone"))
+        if (!gameObject.name.Contains("Clone"))
+        {
+            surface = gameObject.GetComponent<FlameMovementController>().surface;
+            PlaceFlameOnSurface();
             StartCoroutine(DelayedSetupInitialFlame());
+        }
         else
             StartCoroutine(DelayedSetupTrailingFlame());
     }
@@ -122,7 +126,7 @@ public class FlameController : MonoBehaviour
         return trailFlameGrowthThreshold;
     }
 
-    public void PlaceFlameOnTable()
+    public void PlaceFlameOnSurface()
     {
         RaycastHit hitPlace;
         Transform flameStackTransform = gameObject.transform;
@@ -130,8 +134,8 @@ public class FlameController : MonoBehaviour
         // Cast a ray straight down.
         if (Physics.Raycast(flameStackTransform.position, -Vector3.up, out hitPlace))
         {
-            // If it hits the table.
-            if (hitPlace.collider.gameObject.CompareTag("Table"))
+            // If it hits the surface.
+            if (hitPlace.collider.gameObject == surface)
             {
                 if (gameObject.name.Contains("TRAIL") && !gameObject.name.Contains("BIG"))
                 {
@@ -144,6 +148,7 @@ public class FlameController : MonoBehaviour
                     flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f + ComputeYPosition(flameStackTransform.localScale.y), 0);
                 }
             }
+            Debug.DrawLine(flameStackTransform.position, hitPlace.point, Color.red, 5.0f);
         }
     }
 
@@ -172,7 +177,7 @@ public class FlameController : MonoBehaviour
 
         SetupFlame();
 
-        PlaceFlameOnTable();
+        PlaceFlameOnSurface();
 
         StartCoroutine(RiseFromTable(0.5f));
     }
@@ -189,7 +194,7 @@ public class FlameController : MonoBehaviour
             else
                 trailFlameTransform.localScale += new Vector3(0, growthSpeed, 0);
 
-            PlaceFlameOnTable();
+            PlaceFlameOnSurface();
 
             yield return null;
         }

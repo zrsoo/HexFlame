@@ -17,6 +17,8 @@ public class FlameMovementController : MonoBehaviour
 
     Transform gameObjectTransform;
 
+    public GameObject surface;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,8 +45,8 @@ public class FlameMovementController : MonoBehaviour
         // Cast ray straight down (while looking ahead, in order to change course before going off the table).
         if (Physics.Raycast(transform.position + movementDirection * (speed + 0.5f) * Time.deltaTime, -Vector3.up, out hitMove))
         {
-            // If it hits the table.
-            if (hitMove.collider.gameObject.tag == "Table")
+            // If it hits the surface.
+            if (hitMove.collider.gameObject == surface)
             {
                 flameOnTable = true;
             }
@@ -54,7 +56,7 @@ public class FlameMovementController : MonoBehaviour
             }
         }
 
-        // If the flame is not on the table, pick another random direction.
+        // If the flame is not on the surface, pick another random direction.
         if (!flameOnTable)
         {
             GenerateRandomMovementDirection();
@@ -64,16 +66,15 @@ public class FlameMovementController : MonoBehaviour
 
     private void GenerateRandomMovementDirection()
     {
-        GameObject table = GameObject.FindGameObjectWithTag("Table");
-        Vector3 tableCenterPosition = new Vector3(table.transform.position.x, transform.position.y, table.transform.position.z);
-        Vector3 directionToTableCenter = (tableCenterPosition - transform.position).normalized;
+        Vector3 surfaceCenterPosition = new Vector3(surface.transform.position.x, transform.position.y, surface.transform.position.z);
+        Vector3 directionToSurfaceCenter = (surfaceCenterPosition - transform.position).normalized;
 
         // Create a random offset.
         float angleOffset = Random.Range(-45.0f, 45.0f); // Change this range depending on how much randomness you want
         Quaternion rotation = Quaternion.Euler(0, angleOffset, 0);
 
         // Apply the random offset to the direction.
-        movementDirection = rotation * directionToTableCenter;
+        movementDirection = rotation * directionToSurfaceCenter;
     }
 
     private void LeaveTrail()

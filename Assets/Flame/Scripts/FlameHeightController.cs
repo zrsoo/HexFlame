@@ -94,6 +94,6 @@ public class FlameHeightController : MonoBehaviour
         currentWidth = Mathf.Clamp(currentWidth, minFlameHeight, maxFlameHeight);
 
         localTransform.localScale = new Vector3(currentWidth, currentHeight, localTransform.localScale.z);
-        flameController.PlaceFlameOnTable();
+        flameController.PlaceFlameOnSurface();
     }
 }
