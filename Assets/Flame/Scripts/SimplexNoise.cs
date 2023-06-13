@@ -92,7 +92,6 @@ public class SimplexNoise : MonoBehaviour
         }
     }
 
-    // TODO remove set of _HexagonYPosition from here, only set it once in FlameMovementController or somewhere
     void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
     {
         hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_SampledNoise", noiseValue);

@@ -68,7 +68,7 @@ Shader "Unlit/FlameShader"
                 v2f o;
 
                 // Control the amplitude of the displacement
-                float displacementAmplitude = 0.05f; 
+                float displacementAmplitude = 0.025f; 
 
                 // Compute a displacement based on the sampled noise
                 float displacement = _SampledNoise * displacementAmplitude * _RandomAmplitudeFactor;
