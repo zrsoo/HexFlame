@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.1
   flamePrefab: {fileID: 5760552679650853169, guid: dc41d5469b36e1749a63307fc60f9680, type: 3}
-  trailSpawnPositionDifference: 0.01
+  trailSpawnPositionDifference: 0.005
   surface: {fileID: 792434004}
 --- !u!114 &222030202
 MonoBehaviour:
