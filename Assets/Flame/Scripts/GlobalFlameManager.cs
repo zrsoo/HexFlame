@@ -79,6 +79,4 @@ public class GlobalFlameManager : MonoBehaviour
         outerGreen = outerGreenChannel;
         outerBlue = outerBlueChannel;
     }
-
-    // Include any other methods that operate on all flames
 }

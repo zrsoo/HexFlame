@@ -23,7 +23,6 @@ public class SimplexNoise : MonoBehaviour
 
     private int numberOfHexagons;
 
-    // TODO maybe change to circular array
     private List<float> middleHexagonNoiseHistory = new List<float>();
 
     private int maxHistoryLength;
@@ -76,7 +75,7 @@ public class SimplexNoise : MonoBehaviour
             middleHexagonNoiseHistory.RemoveAt(middleHexagonNoiseHistory.Count - 1);
         }
 
-        // Now, for each hexagon, use a value from the history based on the hexagon's distance from the middle
+        // For each hexagon, use a value from the history based on the hexagon's distance from the middle
         for (int i = 0; i < numberOfHexagons; ++i)
         {
             // Calculate the distance from the middle

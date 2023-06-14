@@ -41,7 +41,6 @@ public class FlamePropertyController : MonoBehaviour
         greenGauge.text = greenSlider.value.ToString("0.0");
         blueGauge.text = blueSlider.value.ToString("0.0");
 
-        // SendInnerColors(redSlider.value, greenSlider.value, blueSlider.value);
         GlobalFlameManager.instance.OnColorChanged(redSlider.value, greenSlider.value, blueSlider.value, 255.0f, 0.0f, 0.0f);
     }
 
