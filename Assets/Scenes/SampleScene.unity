@@ -4200,14 +4200,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfa62f11fc8d49e4487300e4d0dbeefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panSpeed: 2
-  rotateSpeed: 500
-  zoomSpeed: 1000
+  speed: 5
+  mouseSensitivity: 500
 --- !u!1 &974895070
 GameObject:
   m_ObjectHideFlags: 0
