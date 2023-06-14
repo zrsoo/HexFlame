@@ -42,7 +42,7 @@ public class SimplexNoise : MonoBehaviour
     {
         noiseScale = computeNoiseScale();
 
-        noiseSpeed = UnityEngine.Random.Range(0.5f, 1.5f);
+        noiseSpeed = UnityEngine.Random.Range(1.5f, 1.7f);
         
         numberOfHexagons = transform.childCount;
 

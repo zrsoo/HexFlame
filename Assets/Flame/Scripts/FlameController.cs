@@ -21,7 +21,6 @@ public class FlameController : MonoBehaviour
 
         if (flameMovementController != null)
         {
-            surface = flameMovementController.surface;
             PlaceFlameOnSurface();
             StartCoroutine(DelayedSetupInitialFlame());
         }
@@ -130,6 +129,11 @@ public class FlameController : MonoBehaviour
         trailFlameGrowthThreshold = threshold;
     }
 
+    public void SetSurface(GameObject surface)
+    {
+        this.surface = surface;
+    }
+
     public float GetTrailFlameGrowthThreshold()
     {
         return trailFlameGrowthThreshold;
@@ -146,16 +150,7 @@ public class FlameController : MonoBehaviour
             // If it hits the surface.
             if (hitPlace.collider.gameObject == surface)
             {
-                if (gameObject.name.Contains("TRAIL") && !gameObject.name.Contains("BIG"))
-                {
-                    // Position flame on table but not slightly above since flame is already small.
-                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f, 0);
-                }
-                else
-                {
-                    // Position flame on table (slightly above).
-                    flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f + ComputeYPosition(flameStackTransform.localScale.y), 0);
-                }
+                flameStackTransform.position = hitPlace.point + new Vector3(0, 0.003f + ComputeYPosition(flameStackTransform.localScale.y), 0);
             }
         }
     }

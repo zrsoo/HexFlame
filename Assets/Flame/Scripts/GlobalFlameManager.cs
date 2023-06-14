@@ -13,6 +13,8 @@ public class GlobalFlameManager : MonoBehaviour
     public float trailFlameGrowthChance;
     public float trailFlameGrowthThreshold;
 
+    private GameObject surface;
+
     void Awake()
     {
         if (instance != null)
@@ -48,6 +50,13 @@ public class GlobalFlameManager : MonoBehaviour
 
         flameController.SetTrailFlameGrowthChance(trailFlameGrowthChance);
         flameController.SetTrailFlameGrowthThreshold(trailFlameGrowthThreshold);
+
+        flameController.SetSurface(surface);
+    }
+
+    public void RegisterSurface(GameObject surface)
+    {
+        this.surface = surface;
     }
 
     public void UnregisterFlameController(FlameController flameController)

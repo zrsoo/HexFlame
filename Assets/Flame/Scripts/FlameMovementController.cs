@@ -24,6 +24,8 @@ public class FlameMovementController : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0; // Disable Sync
 
+        GlobalFlameManager.instance.RegisterSurface(surface);
+
         gameObjectTransform = transform;
 
         speed = 0.01f;

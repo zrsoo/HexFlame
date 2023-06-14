@@ -1,52 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float panSpeed = 10.0f;
-    public float rotateSpeed = 50.0f;
-    public float zoomSpeed = 1000.0f;
+    public float speed = 10.0f;
+    public float mouseSensitivity = 100.0f;
 
-    private Vector3 panMovement;
+    private float xRotation = 0.0f;
+    private float yRotation = 0.0f;
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        PanCamera();
-        RotateCamera();
-        ZoomCamera();
-    }
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-    void PanCamera()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        panMovement = new Vector3(-horizontalInput, 0, -verticalInput).normalized * panSpeed * Time.deltaTime;
+        transform.Translate(movement * speed * Time.deltaTime, Space.Self);
 
-        transform.Translate(panMovement, Space.World);
-    }
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-    void RotateCamera()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            float horizontalMouseInput = Input.GetAxis("Mouse X");
-            float verticalMouseInput = Input.GetAxis("Mouse Y");
+        xRotation -= mouseY;
+        yRotation += mouseX;
 
-            transform.RotateAround(transform.position, Vector3.up, horizontalMouseInput * rotateSpeed * Time.deltaTime);
-            transform.RotateAround(transform.position, transform.right, -verticalMouseInput * rotateSpeed * Time.deltaTime);
-        }
-    }
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-    void ZoomCamera()
-    {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-
-        Vector3 zoomMovement = scrollInput * zoomSpeed * Time.deltaTime * transform.forward;
-
-        transform.Translate(zoomMovement, Space.World);
+        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 }
