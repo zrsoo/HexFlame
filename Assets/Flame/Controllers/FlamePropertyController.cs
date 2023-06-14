@@ -116,6 +116,7 @@ public class FlamePropertyController : MonoBehaviour
                 GlobalFlameManager.instance.OnColorChanged(255.0f, 0.0f, 0.0f, 102.0f, 0.0f, 102.0f);
 
                 break;
+
             default:
                 Debug.Log("Invalid selection");
                 break;

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class FlameMovementController : MonoBehaviour
@@ -15,12 +14,12 @@ public class FlameMovementController : MonoBehaviour
     private Vector3 lastTrailPosition;
     public float trailSpawnPositionDifference = 0.01f;
 
-    Transform gameObjectTransform;
+    private Transform gameObjectTransform;
 
     public GameObject surface;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         QualitySettings.vSyncCount = 0; // Disable Sync
 
@@ -34,7 +33,7 @@ public class FlameMovementController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Comment next 3 lines for stationary flame
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
@@ -86,7 +85,7 @@ public class FlameMovementController : MonoBehaviour
         if (distanceTraveled > trailSpawnPositionDifference)
         {
             GameObject newFlame = Instantiate(flamePrefab, gameObjectTransform.position - new Vector3(0.0f, 0.0f, 0.01f), gameObjectTransform.rotation);
-            // newFlame.SetActive(false);            
+            // newFlame.SetActive(false);
 
             // newFlame.SetActive(true);
             newFlame.name += "TRAIL";

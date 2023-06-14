@@ -5,7 +5,7 @@ public class FlameHeightController : MonoBehaviour
 {
     public float baseGrowthSpeed = 0.05f;
     private bool isGrowing = true;
-    private float minFlameHeight; 
+    private float minFlameHeight;
     private float maxFlameHeight;
     private float randomGrowthFactor;
     private float transitionDuration = 10f; // duration over which random values will change
@@ -15,7 +15,7 @@ public class FlameHeightController : MonoBehaviour
     private FlameController flameController;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         flameController = GetComponent<FlameController>();
 
@@ -30,11 +30,12 @@ public class FlameHeightController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         UpdateFlameHeight();
     }
-    IEnumerator ChangeGrowthFactorOverTime()
+
+    private IEnumerator ChangeGrowthFactorOverTime()
     {
         while (true)
         {

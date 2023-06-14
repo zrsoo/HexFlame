@@ -25,6 +25,7 @@ public class SimplexNoise : MonoBehaviour
 
     // TODO maybe change to circular array
     private List<float> middleHexagonNoiseHistory = new List<float>();
+
     private int maxHistoryLength;
 
     private int middleIndex;
@@ -38,12 +39,12 @@ public class SimplexNoise : MonoBehaviour
     private float noiseScale;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         noiseScale = computeNoiseScale();
 
         noiseSpeed = UnityEngine.Random.Range(1.5f, 1.7f);
-        
+
         numberOfHexagons = transform.childCount;
 
         maxHistoryLength = numberOfHexagons;
@@ -59,7 +60,7 @@ public class SimplexNoise : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         elapsedTime += Time.deltaTime;
 
@@ -80,19 +81,19 @@ public class SimplexNoise : MonoBehaviour
         {
             // Calculate the distance from the middle
             distanceFromMiddle = Mathf.Abs(i - middleIndex);
-            
+
             // If the distance is greater than the history length, use the oldest value in the history
             if (distanceFromMiddle >= middleHexagonNoiseHistory.Count)
             {
                 distanceFromMiddle = middleHexagonNoiseHistory.Count - 1;
             }
-            
+
             // Set the noise value of the hexagon
             SetNoiseOfHexagon(i, middleHexagonNoiseHistory[distanceFromMiddle]);
         }
     }
 
-    void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
+    private void SetNoiseOfHexagon(int hexagonIndex, float noiseValue)
     {
         hexagonsMeshRenderers[hexagonIndex].material.SetFloat("_SampledNoise", noiseValue);
     }
@@ -189,6 +190,6 @@ public class SimplexNoise : MonoBehaviour
 
         float yPos = m * scale + b;
 
-        return yPos;     
+        return yPos;
     }
 }

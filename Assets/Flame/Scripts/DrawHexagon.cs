@@ -67,7 +67,6 @@ public class DrawHexagon : MonoBehaviour
         }
         mesh.uv = uvs;
 
-
         mesh.RecalculateNormals();
     }
 }

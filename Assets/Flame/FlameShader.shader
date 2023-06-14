@@ -1,125 +1,125 @@
 Shader "Unlit/FlameShader"
 {
-    Properties
-    {
-        _MainTex ("Texture", 2D) = "white" {}
-        _FlameOpacity ("Flame Opacity", Range(0.0, 1.0)) = 1.0
-        _SampledNoise ("Noise", Range(0.0, 1.1)) = 0.0
-        _HexagonYPosition ("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
-        _FlameHeight ("FlameHeight", Range(0.0, 100.0)) = 0.0
-        _RandomAmplitudeFactor ("Random Amplitude Factor", Range(0.7, 1.3)) = 1.0
+	Properties
+	{
+		_MainTex("Texture", 2D) = "white" {}
+		_FlameOpacity("Flame Opacity", Range(0.0, 1.0)) = 1.0
+		_SampledNoise("Noise", Range(0.0, 1.1)) = 0.0
+		_HexagonYPosition("Hexagon Y Position", Range(0.0, 100.0)) = 0.0
+		_FlameHeight("FlameHeight", Range(0.0, 100.0)) = 0.0
+		_RandomAmplitudeFactor("Random Amplitude Factor", Range(0.7, 1.3)) = 1.0
 
-        _RedChannel ("Red Channel", Range(0.0, 1.0)) = 1.0
-        _GreenChannel ("Green Channel", Range(0.0, 1.0)) = 0.5
-        _BlueChannel ("Blue Channel", Range(0.0, 1.0)) = 0.0
+		_RedChannel("Red Channel", Range(0.0, 1.0)) = 1.0
+		_GreenChannel("Green Channel", Range(0.0, 1.0)) = 0.5
+		_BlueChannel("Blue Channel", Range(0.0, 1.0)) = 0.0
 
-        _OuterRedChannel ("Outer Red Channel", Range(0.0, 1.0)) = 1.0
-        _OuterGreenChannel ("Outer Green Channel", Range(0.0, 1.0)) = 0.0
-        _OuterBlueChannel ("Outer Blue Channel", Range(0.0, 1.0)) = 0.0
-    }
-    SubShader
-    {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
-        LOD 100
+		_OuterRedChannel("Outer Red Channel", Range(0.0, 1.0)) = 1.0
+		_OuterGreenChannel("Outer Green Channel", Range(0.0, 1.0)) = 0.0
+		_OuterBlueChannel("Outer Blue Channel", Range(0.0, 1.0)) = 0.0
+	}
+		SubShader
+		{
+			Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+			LOD 100
 
-        Pass
-        {
-            ZWrite Off
-            Cull Off
-            Blend SrcAlpha OneMinusSrcAlpha 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+			Pass
+			{
+				ZWrite Off
+				Cull Off
+				Blend SrcAlpha OneMinusSrcAlpha
+				CGPROGRAM
+				#pragma vertex vert
+				#pragma fragment frag
 
-            #include "UnityCG.cginc"
+				#include "UnityCG.cginc"
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+				struct appdata
+				{
+					float4 vertex : POSITION;
+					float2 uv : TEXCOORD0;
+				};
 
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
+				struct v2f
+				{
+					float2 uv : TEXCOORD0;
+					float4 vertex : SV_POSITION;
+				};
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+				sampler2D _MainTex;
+				float4 _MainTex_ST;
 
-            float _FlameOpacity;
-            float _SampledNoise;
-            float _HexagonYPosition;
-            float _FlameHeight;
+				float _FlameOpacity;
+				float _SampledNoise;
+				float _HexagonYPosition;
+				float _FlameHeight;
 
-            float _RedChannel;
-            float _GreenChannel;
-            float _BlueChannel;
+				float _RedChannel;
+				float _GreenChannel;
+				float _BlueChannel;
 
-            float _OuterRedChannel;
-            float _OuterGreenChannel;
-            float _OuterBlueChannel;
+				float _OuterRedChannel;
+				float _OuterGreenChannel;
+				float _OuterBlueChannel;
 
-            float _RandomAmplitudeFactor;
+				float _RandomAmplitudeFactor;
 
-            v2f vert (appdata v)
-            {
-                v2f o;
+				v2f vert(appdata v)
+				{
+					v2f o;
 
-                // Control the amplitude of the displacement
-                float displacementAmplitude = 0.025f; 
+					// Control the amplitude of the displacement
+					float displacementAmplitude = 0.025f;
 
-                // Compute a displacement based on the sampled noise
-                float displacement = _SampledNoise * displacementAmplitude * _RandomAmplitudeFactor;
+					// Compute a displacement based on the sampled noise
+					float displacement = _SampledNoise * displacementAmplitude * _RandomAmplitudeFactor;
 
-                // Modulate the displacement with y-coordinate
-                // This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
-                float displacementFactor = smoothstep(0.0, 1.0, _HexagonYPosition / _FlameHeight);
+					// Modulate the displacement with y-coordinate
+					// This causes the displacement to be 0 at the base of the flame (y = 0) and gradually increase towards the tip of the flame
+					float displacementFactor = smoothstep(0.0, 1.0, _HexagonYPosition / _FlameHeight);
 
-                // Apply the displacement factor to the displacement
-                displacement *= displacementFactor;
-                
-                // Adjust the vertex position based on the displacement
-                o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
+					// Apply the displacement factor to the displacement
+					displacement *= displacementFactor;
 
-                o.uv = v.uv;
-                return o;
-            }
+					// Adjust the vertex position based on the displacement
+					o.vertex = UnityObjectToClipPos(v.vertex + float4(displacement, 0, 0, 0));
 
-            fixed4 frag (v2f i) : SV_Target
-            {
-                // Define the center of the texture
-                float2 center = float2(0.5, 0.5);
+					o.uv = v.uv;
+					return o;
+				}
 
-                // Calculate the UV coordinates relative to the center
-                float2 distUv = i.uv - center;
+				fixed4 frag(v2f i) : SV_Target
+				{
+					// Define the center of the texture
+					float2 center = float2(0.5, 0.5);
 
-                // Calculate the distance from the center of the texture
-                float dist = length(distUv);
+					// Calculate the UV coordinates relative to the center
+					float2 distUv = i.uv - center;
 
-                if(dist > 0.80) {
-                    discard;
-                }
+					// Calculate the distance from the center of the texture
+					float dist = length(distUv);
 
-                fixed4 innerColor = fixed4(_RedChannel, 
-                    _GreenChannel, _BlueChannel, 1.0);
-                fixed4 outerColor = fixed4(_OuterRedChannel, _OuterGreenChannel,
-                 _OuterBlueChannel, 1.0);
+					if (dist > 0.80) {
+						discard;
+					}
 
-                fixed4 color;
+					fixed4 innerColor = fixed4(_RedChannel,
+						_GreenChannel, _BlueChannel, 1.0);
+					fixed4 outerColor = fixed4(_OuterRedChannel, _OuterGreenChannel,
+					 _OuterBlueChannel, 1.0);
 
-                float t = smoothstep(-0.2, 1.0, dist);
-                color = lerp(innerColor, outerColor, t);
+					fixed4 color;
 
-                dist += 0.1;
-                color.a = lerp(1.0, -0.08, dist);
-                color.a *= 0.2;
-                color.a *= _FlameOpacity;
+					float t = smoothstep(-0.2, 1.0, dist);
+					color = lerp(innerColor, outerColor, t);
 
-                return color;
-            }
-            ENDCG
-        }
-    }
+					dist += 0.1;
+					color.a = lerp(1.0, -0.08, dist);
+					color.a *= 0.2;
+					color.a *= _FlameOpacity;
+
+					return color;
+				}
+				ENDCG
+			}
+		}
 }

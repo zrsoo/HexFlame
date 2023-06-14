@@ -15,7 +15,7 @@ public class GlobalFlameManager : MonoBehaviour
 
     private GameObject surface;
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
         {

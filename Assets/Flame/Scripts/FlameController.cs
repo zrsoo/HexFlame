@@ -4,7 +4,7 @@ using UnityEngine;
 public class FlameController : MonoBehaviour
 {
     private MeshRenderer[] meshRenderers;
-    int numberOfHexagons;
+    private int numberOfHexagons;
 
     private float trailFlameGrowthChance;
     private float trailFlameGrowthThreshold;
@@ -13,7 +13,7 @@ public class FlameController : MonoBehaviour
     private GameObject surface;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         GlobalFlameManager.instance.RegisterFlameController(this);
 
@@ -35,9 +35,8 @@ public class FlameController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
     }
 
     public void SetHexagonMeshRenderers(MeshRenderer[] meshRenderers)
