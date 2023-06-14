@@ -229,12 +229,10 @@ public class FlameController : MonoBehaviour
 
                 float opacity = Mathf.Lerp(initialOpacity, finalOpacity, tOpacity);
 
-                // SetHexagonsOpacity(flame, opacity);
                 SetHexagonsOpacity(opacity);
             }
             else
             {
-                // SetHexagonsOpacity(flame, 0.0f);
                 SetHexagonsOpacity(0.0f);
             }
 

@@ -29,16 +29,16 @@ public class StackHexagons : MonoBehaviour
                 new Vector3(transform.position.x, transform.position.y + i * distanceBetweenCenters, transform.position.z), Quaternion.identity, transform);
             DrawHexagon hexagonScript = hexagon.GetComponent<DrawHexagon>();
 
-            // Adjust the distribution of the sine function using a power function
+            // Adjust the distribution of the sine function using a power function.
             float adjustedI = Mathf.Pow(i / (float)(count - 1), 0.5f);
 
-            // Use the sin function to create a flame shape
+            // Use the sin function to create a flame shape.
             float factor = Mathf.Sin(adjustedI * Mathf.PI);
 
-            // Mix the min and max scales according to the factor
+            // Mix the min and max scales according to the factor.
             float size = Mathf.Lerp(sizeMin, sizeMax, factor);
 
-            // Assign calculated size to the hexagon
+            // Assign calculated size to the hexagon.
             hexagonScript.width = size * scale;
             hexagonScript.height = size * scale;
 

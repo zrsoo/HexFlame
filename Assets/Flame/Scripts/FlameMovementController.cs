@@ -35,7 +35,6 @@ public class FlameMovementController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // Comment next 3 lines for stationary flame
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
         KeepFlameOnSurface();
         LeaveTrail();
@@ -70,8 +69,8 @@ public class FlameMovementController : MonoBehaviour
         Vector3 surfaceCenterPosition = new Vector3(surface.transform.position.x, transform.position.y, surface.transform.position.z);
         Vector3 directionToSurfaceCenter = (surfaceCenterPosition - transform.position).normalized;
 
-        // Create a random offset.
-        float angleOffset = Random.Range(-45.0f, 45.0f); // Change this range depending on how much randomness you want
+        // Adjust angle offset for picking new direction.
+        float angleOffset = Random.Range(-45.0f, 45.0f); 
         Quaternion rotation = Quaternion.Euler(0, angleOffset, 0);
 
         // Apply the random offset to the direction.
@@ -85,9 +84,7 @@ public class FlameMovementController : MonoBehaviour
         if (distanceTraveled > trailSpawnPositionDifference)
         {
             GameObject newFlame = Instantiate(flamePrefab, gameObjectTransform.position - new Vector3(0.0f, 0.0f, 0.01f), gameObjectTransform.rotation);
-            // newFlame.SetActive(false);
 
-            // newFlame.SetActive(true);
             newFlame.name += "TRAIL";
 
             lastTrailPosition = gameObjectTransform.position;
