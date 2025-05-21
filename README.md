@@ -1,12 +1,12 @@
 # HexFlame 🔥
 
-A mesmerizing hexagonal flame simulation created in Unity! This project was developed as part of my Bachelor's Computer Science Thesis, combining procedural animation, shader programming, and a custom hexagonal grid system to create a realistic, interactive flame effect.
+A mesmerizing 2D hexagonal flame simulation created in Unity! This project was developed as part of my Bachelor's Computer Science Thesis, combining procedural animation, shader programming, and a custom hexagonal grid system to create a realistic, interactive flame effect.
 
 ![Flame Simulation Preview](https://github.com/zrsoo/HexFlame/raw/master/preview.gif)
 
 ## Overview
 
-HexFlame is a passion project that explores the fascinating intersection of computer graphics, procedural generation, and real-time simulation. I've always been captivated by how games and simulations recreate natural phenomena, and fire is one of the most challenging and beautiful elements to simulate!
+HexFlame explores the intersection of computer graphics, procedural generation, and real-time simulation. I've always been captivated by how games and simulations recreate natural phenomena, and fire is one of the most challenging and beautiful elements to simulate.
 
 This project uses a hexagonal grid structure to create a more organic-looking flame compared to traditional particle systems. The flame's movement, height, and intensity are all procedurally generated and can be customized in real-time.
 
@@ -119,12 +119,6 @@ You can easily customize the flame by adjusting parameters in the Inspector:
 - **C#**: Primary programming language
 - **ShaderLab/HLSL**: Custom shader programming
 - **Git**: Version control
-
-## Acknowledgments
-
-- My thesis advisor for guidance throughout the project
-- The Unity community for invaluable resources and inspiration
-- Various computer graphics research papers on fire simulation techniques
 
 ## License
 
