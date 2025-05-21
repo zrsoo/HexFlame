@@ -126,4 +126,4 @@ This project is available for educational and personal use. Feel free to explore
 
 ---
 
-Created with ❤️ and lots of ☕ by [zrsoo](https://github.com/zrsoo)
+Created with ❤️ by [zrsoo](https://github.com/zrsoo)
